@@ -490,7 +490,7 @@ if __name__ == '__main__':
         chrome.hora_jogo = hora_jogo_atual
         hora = int(hora_jogo_atual.split(':')[0])
         minuto = int(hora_jogo_atual.split(':')[1])
-        if hora_jogo_atual == '00:23':
+        if hora_jogo_atual == chrome.lista_horarios[0].get('hora'):
             now = datetime.today + timedelta(hours=3)
         else:
             now = datetime.today()  
