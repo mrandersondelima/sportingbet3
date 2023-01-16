@@ -44,7 +44,37 @@ class ChromeAuto():
         self.jogos_atuais = []
         self.controla_jogo_acima_abaixo = 0
         self.n_jogos_alesta_sistema_rodando = 14
-        self.lista_horarios = ['00:53', '01:38', '03:05', '04:47', '05:32', '07:14', '07:59', '09:41', '10:26', '12:08', '12:53', '14:35', '15:20', '17:02', '17:47', '19:29', '20:14', '22:26', '23:11']
+        self.nome_time = None
+        self.lista_horarios = [{ 'time': 'Espanha', 'hora': '00:53'}, \
+            { 'time': 'Espanha', 'hora' : '01:38' }, \
+            { 'time': 'México', 'hora' : '02:17' }, \
+            { 'time': 'Espanha', 'hora' : '03:05' }, \
+            { 'time': 'México', 'hora' : '03:44' }, \
+            { 'time': 'Espanha', 'hora' : '04:47' }, \
+            { 'time': 'Espanha', 'hora' : '05:32' }, \
+            { 'time': 'México', 'hora' : '06:11' }, \
+            { 'time': 'Espanha', 'hora' : '07:14' }, \
+            { 'time': 'Espanha', 'hora' : '07:59' }, \
+            { 'time': 'México', 'hora' : '08:38' }, \
+            { 'time': 'Espanha', 'hora' : '09:41' }, \
+            { 'time': 'Espanha', 'hora' : '10:26' }, \
+            { 'time': 'México', 'hora' : '11:05' }, \
+            { 'time': 'Espanha', 'hora' : '12:08' }, \
+            { 'time': 'Espanha', 'hora' : '12:53' }, \
+            { 'time': 'México', 'hora' : '13:32' }, \
+            { 'time': 'Espanha', 'hora' : '14:35' }, \
+            { 'time': 'Espanha', 'hora' : '15:20' }, \
+            { 'time': 'México', 'hora' : '15:59' }, \
+            { 'time': 'Espanha', 'hora' : '17:02' }, \
+            { 'time': 'Espanha', 'hora' : '17:47' }, \
+            { 'time': 'México', 'hora' : '18:26' }, \
+            { 'time': 'Espanha', 'hora' : '19:29' }, \
+            { 'time': 'Espanha', 'hora' : '20:14' }, \
+            { 'time': 'México', 'hora' : '20:53' }, \
+            { 'time': 'México', 'hora' : '21:23' }, \
+            { 'time': 'Espanha', 'hora' : '22:26' }, \
+            { 'time': 'Espanha', 'hora' : '23:11' }, \
+            { 'time': 'México', 'hora' : '23:50' }]
         return
 
     def acessa(self, site):
@@ -237,7 +267,7 @@ class ChromeAuto():
     def analisa_odds(self):
         print('Entrou no analisa_odds')
         try: 
-            resultado_final = "//*[normalize-space(text()) = 'Espanha']/ancestor::ms-event-pick"
+            resultado_final = f"//*[normalize-space(text()) = '{self.nome_time}']/ancestor::ms-event-pick"
 
             resultado_final_el = WebDriverWait(self.chrome, 20).until(
                 EC.element_to_be_clickable((By.XPATH, resultado_final) ))  
@@ -271,8 +301,8 @@ class ChromeAuto():
         hora_atual = datetime.today()
 
         for horario in self.lista_horarios:
-            hora = int(horario.split(':')[0])
-            minuto = int(horario.split(':')[1])
+            hora = int(horario.get('hora').split(':')[0])
+            minuto = int(horario.get('hora').split(':')[1])
             now = datetime.today()  
             hora_do_jogo = datetime( now.year, now.month, now.day, hora, minuto, 0 )
 
@@ -437,7 +467,8 @@ if __name__ == '__main__':
     numero_jogos = len( chrome.lista_horarios)
     while True:
         ## aqui o sistema vai pausar até que faltem 5 minutos pra a partida
-        hora_jogo_atual = chrome.lista_horarios[ indice_jogo % numero_jogos ]
+        hora_jogo_atual = chrome.lista_horarios[ indice_jogo % numero_jogos ].get('hora')
+        chrome.nome_time = chrome.lista_horarios[ indice_jogo %  numero_jogos].get('time')
         chrome.hora_jogo = hora_jogo_atual
         hora = int(hora_jogo_atual.split(':')[0])
         minuto = int(hora_jogo_atual.split(':')[1])
@@ -448,7 +479,7 @@ if __name__ == '__main__':
         hora_do_jogo = datetime( now.year, now.month, now.day, hora, minuto, 0)
 
         print(f'ESPERANDO JOGO DAS {chrome.hora_jogo}')
-        pause.until( hora_do_jogo - timedelta(minutes=15)  )
+        pause.until( hora_do_jogo - timedelta(minutes=6)  )
 
         chrome.acessa('https://www.sportingbet.com/pt-br/labelhost/login')        
         chrome.faz_login()  
