@@ -48,6 +48,7 @@ class ChromeAuto():
         self.lista_horarios = [ { 'time': 'Senegal', 'hora': '00:23'}, \
             { 'time': 'Tunísia', 'hora': '00:32'}, \
             { 'time': 'Espanha', 'hora': '00:53'}, \
+            { 'time': 'Coreia do Sul - Coreia do Sul', 'hora': '00:59'}, \
             { 'time': 'Espanha', 'hora' : '01:38' }, \
             { 'time': 'México', 'hora' : '02:17' }, \
             { 'time': 'Espanha', 'hora' : '03:05' }, \
@@ -55,42 +56,50 @@ class ChromeAuto():
             { 'time': 'Senegal', 'hora': '04:17'}, \
             { 'time': 'Tunísia', 'hora': '04:26'}, \
             { 'time': 'Espanha', 'hora' : '04:47' }, \
+            { 'time': 'Coreia do Sul - Coreia do Sul', 'hora': '04:53'}, \
             { 'time': 'Espanha', 'hora' : '05:32' }, \
             { 'time': 'México', 'hora' : '06:11' }, \
             { 'time': 'Senegal', 'hora': '06:44'}, \
             { 'time': 'Tunísia', 'hora': '06:53'},              
             { 'time': 'Espanha', 'hora' : '07:14' }, \
+            { 'time': 'Coreia do Sul - Coreia do Sul', 'hora': '07:20'}, \
             { 'time': 'Espanha', 'hora' : '07:59' }, \
             { 'time': 'México', 'hora' : '08:38' }, \
             { 'time': 'Senegal', 'hora': '09:11'}, \
             { 'time': 'Tunísia', 'hora': '09:20'}, 
             { 'time': 'Espanha', 'hora' : '09:41' }, \
+            { 'time': 'Coreia do Sul - Coreia do Sul', 'hora': '09:47'}, \
             { 'time': 'Espanha', 'hora' : '10:26' }, \
             { 'time': 'México', 'hora' : '11:05' }, \
             { 'time': 'Senegal', 'hora': '11:38'}, \
             { 'time': 'Tunísia', 'hora': '11:47'}, 
             { 'time': 'Espanha', 'hora' : '12:08' }, \
+            { 'time': 'Coreia do Sul - Coreia do Sul', 'hora': '12:14'}, \
             { 'time': 'Espanha', 'hora' : '12:53' }, \
             { 'time': 'México', 'hora' : '13:32' }, \
             { 'time': 'Senegal', 'hora': '14:05'}, \
             { 'time': 'Tunísia', 'hora': '14:14'}, 
             { 'time': 'Espanha', 'hora' : '14:35' }, \
+            { 'time': 'Coreia do Sul - Coreia do Sul', 'hora': '14:41'}, \
             { 'time': 'Espanha', 'hora' : '15:20' }, \
             { 'time': 'México', 'hora' : '15:59' }, \
             { 'time': 'Senegal', 'hora': '16:32'}, \
             { 'time': 'Tunísia', 'hora': '16:41'}, 
             { 'time': 'Espanha', 'hora' : '17:02' }, \
+            { 'time': 'Coreia do Sul - Coreia do Sul', 'hora': '17:08'}, \
             { 'time': 'Espanha', 'hora' : '17:47' }, \
             { 'time': 'México', 'hora' : '18:26' }, \
             { 'time': 'Senegal', 'hora': '18:59'}, \
             { 'time': 'Tunísia', 'hora': '19:08'}, 
             { 'time': 'Espanha', 'hora' : '19:29' }, \
+            { 'time': 'Coreia do Sul - Coreia do Sul', 'hora': '19:35'}, \
             { 'time': 'Espanha', 'hora' : '20:14' }, \
             { 'time': 'México', 'hora' : '20:53' }, \
             { 'time': 'México', 'hora' : '21:23' }, \
             { 'time': 'Senegal', 'hora': '21:56'}, \
             { 'time': 'Tunísia', 'hora': '22:05'}, 
             { 'time': 'Espanha', 'hora' : '22:26' }, \
+            { 'time': 'Coreia do Sul - Coreia do Sul', 'hora': '22:32'}, \
             { 'time': 'Espanha', 'hora' : '23:11' }, \
             { 'time': 'México', 'hora' : '23:50' }]
         return
@@ -497,7 +506,7 @@ if __name__ == '__main__':
         hora_do_jogo = datetime( now.year, now.month, now.day, hora, minuto, 0)
 
         print(f'ESPERANDO JOGO DAS {chrome.hora_jogo}')
-        pause.until( hora_do_jogo - timedelta(minutes=6)  )
+        pause.until( hora_do_jogo - timedelta(minutes=3)  )
 
         chrome.acessa('https://www.sportingbet.com/pt-br/labelhost/login')        
         chrome.faz_login()  
