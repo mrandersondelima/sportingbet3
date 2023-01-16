@@ -45,33 +45,43 @@ class ChromeAuto():
         self.controla_jogo_acima_abaixo = 0
         self.n_jogos_alesta_sistema_rodando = 14
         self.nome_time = None
-        self.lista_horarios = [{ 'time': 'Espanha', 'hora': '00:53'}, \
+        self.lista_horarios = [
+            { 'time': 'Senegal', 'hora': '00:23'}, \
+            { 'time': 'Espanha', 'hora': '00:53'}, \
             { 'time': 'Espanha', 'hora' : '01:38' }, \
             { 'time': 'México', 'hora' : '02:17' }, \
             { 'time': 'Espanha', 'hora' : '03:05' }, \
             { 'time': 'México', 'hora' : '03:44' }, \
+            { 'time': 'Senegal', 'hora': '04:17'}, \
             { 'time': 'Espanha', 'hora' : '04:47' }, \
             { 'time': 'Espanha', 'hora' : '05:32' }, \
             { 'time': 'México', 'hora' : '06:11' }, \
+            { 'time': 'Senegal', 'hora': '06:44'}, \
             { 'time': 'Espanha', 'hora' : '07:14' }, \
             { 'time': 'Espanha', 'hora' : '07:59' }, \
             { 'time': 'México', 'hora' : '08:38' }, \
+            { 'time': 'Senegal', 'hora': '09:11'}, \
             { 'time': 'Espanha', 'hora' : '09:41' }, \
             { 'time': 'Espanha', 'hora' : '10:26' }, \
             { 'time': 'México', 'hora' : '11:05' }, \
+            { 'time': 'Senegal', 'hora': '11:38'}, \
             { 'time': 'Espanha', 'hora' : '12:08' }, \
             { 'time': 'Espanha', 'hora' : '12:53' }, \
             { 'time': 'México', 'hora' : '13:32' }, \
+            { 'time': 'Senegal', 'hora': '14:05'}, \
             { 'time': 'Espanha', 'hora' : '14:35' }, \
             { 'time': 'Espanha', 'hora' : '15:20' }, \
             { 'time': 'México', 'hora' : '15:59' }, \
+            { 'time': 'Senegal', 'hora': '16:32'}, \
             { 'time': 'Espanha', 'hora' : '17:02' }, \
             { 'time': 'Espanha', 'hora' : '17:47' }, \
             { 'time': 'México', 'hora' : '18:26' }, \
+            { 'time': 'Senegal', 'hora': '18:59'}, \
             { 'time': 'Espanha', 'hora' : '19:29' }, \
             { 'time': 'Espanha', 'hora' : '20:14' }, \
             { 'time': 'México', 'hora' : '20:53' }, \
             { 'time': 'México', 'hora' : '21:23' }, \
+            { 'time': 'Senegal', 'hora': '21:56'}, \
             { 'time': 'Espanha', 'hora' : '22:26' }, \
             { 'time': 'Espanha', 'hora' : '23:11' }, \
             { 'time': 'México', 'hora' : '23:50' }]
@@ -472,7 +482,7 @@ if __name__ == '__main__':
         chrome.hora_jogo = hora_jogo_atual
         hora = int(hora_jogo_atual.split(':')[0])
         minuto = int(hora_jogo_atual.split(':')[1])
-        if hora_jogo_atual == '00:53':
+        if hora_jogo_atual == '00:23':
             now = datetime.today + timedelta(hours=3)
         else:
             now = datetime.today()  
