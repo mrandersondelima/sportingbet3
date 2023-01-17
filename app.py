@@ -17,7 +17,7 @@ import sys
 hora_jogo_atual = None
 
 class ChromeAuto():
-    def __init__(self, meta=0, tipo_valor=1, valor_aposta=None, tipo_meta=None, estilo_jogo=None, usa_perda_acumulada=False):
+    def __init__(self, meta=0, tipo_valor=1, valor_aposta=None, tipo_meta=None, estilo_jogo=None, usa_perda_acumulada=False, numero_jogos_martingale=0):
         self.valor_aposta = valor_aposta
         self.valor_aposta_inicial = valor_aposta
         self.usa_perda_acumulada = usa_perda_acumulada
@@ -45,104 +45,115 @@ class ChromeAuto():
         self.controla_jogo_acima_abaixo = 0
         self.n_jogos_alesta_sistema_rodando = 14
         self.nome_time = None
+        self.numero_jogos_martingale = numero_jogos_martingale
         self.primeira_execucao = True
-        self.lista_horarios = [ { 'time': 'Senegal', 'hora': '00:23'}, \
-            { 'time': 'Tunísia', 'hora': '00:32'}, \
-            { 'time': 'Espanha', 'hora': '00:53'}, \
-            { 'time': 'Coreia do Sul - Coreia do Sul', 'hora': '00:59'}, \
-            { 'time': 'Dinamarca', 'hora': '01:23'}, 
-            { 'time': 'Argentina', 'hora': '01:26'}, \
-            { 'time': 'Espanha', 'hora' : '01:38' }, \
-            { 'time': 'Sérvia', 'hora' : '01:53' }, \
-            { 'time': 'México', 'hora' : '02:17' }, \
-            { 'time': 'Croácia', 'hora' : '02:23' },
-            { 'time': 'Dinamarca', 'hora': '02:50'}, 
-            { 'time': 'Argentina', 'hora': '02:53'}, \
-            { 'time': 'Espanha', 'hora' : '03:05' }, \
-            { 'time': 'Sérvia', 'hora' : '03:20' }, \
-            { 'time': 'México', 'hora' : '03:44' }, \
-            { 'time': 'Croácia', 'hora' : '03:50' },
-            { 'time': 'Senegal', 'hora': '04:17'}, \
-            { 'time': 'Tunísia', 'hora': '04:26'}, \
-            { 'time': 'Espanha', 'hora' : '04:47' }, \
-            { 'time': 'Coreia do Sul - Coreia do Sul', 'hora': '04:53'}, \
-            { 'time': 'Dinamarca', 'hora': '05:17'}, 
-            { 'time': 'Argentina', 'hora': '05:20'}, \
-            { 'time': 'Espanha', 'hora' : '05:32' }, \
-            { 'time': 'Sérvia', 'hora' : '05:47' }, \
-            { 'time': 'México', 'hora' : '06:11' }, \
-            { 'time': 'Croácia', 'hora' : '06:17' },
-            { 'time': 'Senegal', 'hora': '06:44'}, \
-            { 'time': 'Tunísia', 'hora': '06:53'},              
-            { 'time': 'Espanha', 'hora' : '07:14' }, \
-            { 'time': 'Coreia do Sul - Coreia do Sul', 'hora': '07:20'}, \
-            { 'time': 'Dinamarca', 'hora': '07:44'}, 
-            { 'time': 'Argentina', 'hora': '07:47'}, \
-            { 'time': 'Espanha', 'hora' : '07:59' }, \
-            { 'time': 'Sérvia', 'hora' : '08:14' }, \
-            { 'time': 'México', 'hora' : '08:38' }, \
-            { 'time': 'Croácia', 'hora' : '08:44' },
-            { 'time': 'Senegal', 'hora': '09:11'}, \
-            { 'time': 'Tunísia', 'hora': '09:20'}, 
-            { 'time': 'Espanha', 'hora' : '09:41' }, \
-            { 'time': 'Coreia do Sul - Coreia do Sul', 'hora': '09:47'}, \
-            { 'time': 'Dinamarca', 'hora': '10:11'}, 
-            { 'time': 'Argentina', 'hora': '10:14'}, \
-            { 'time': 'Espanha', 'hora' : '10:26' }, \
-            { 'time': 'Sérvia', 'hora' : '10:41' }, \
-            { 'time': 'México', 'hora' : '11:05' }, \
-            { 'time': 'Croácia', 'hora' : '11:11' },
-            { 'time': 'Senegal', 'hora': '11:38'}, \
-            { 'time': 'Tunísia', 'hora': '11:47'}, 
-            { 'time': 'Espanha', 'hora' : '12:08' }, \
-            { 'time': 'Coreia do Sul - Coreia do Sul', 'hora': '12:14'}, \
-            { 'time': 'Dinamarca', 'hora': '12:38'}, 
-            { 'time': 'Argentina', 'hora': '12:41'}, \
-            { 'time': 'Espanha', 'hora' : '12:53' }, \
-            { 'time': 'Sérvia', 'hora' : '13:08' }, \
-            { 'time': 'México', 'hora' : '13:32' }, \
-            { 'time': 'Croácia', 'hora' : '13:38' },
-            { 'time': 'Senegal', 'hora': '14:05'}, \
-            { 'time': 'Tunísia', 'hora': '14:14'}, 
-            { 'time': 'Espanha', 'hora' : '14:35' }, \
-            { 'time': 'Coreia do Sul - Coreia do Sul', 'hora': '14:41'}, \
-            { 'time': 'Dinamarca', 'hora': '15:05'}, 
-            { 'time': 'Argentina', 'hora': '15:08'}, \
-            { 'time': 'Espanha', 'hora' : '15:20' }, \
-            { 'time': 'Sérvia', 'hora' : '15:35' }, \
-            { 'time': 'México', 'hora' : '15:59' }, \
-            { 'time': 'Croácia', 'hora' : '16:05' },
-            { 'time': 'Senegal', 'hora': '16:32'}, \
-            { 'time': 'Tunísia', 'hora': '16:41'}, 
-            { 'time': 'Espanha', 'hora' : '17:02' }, \
-            { 'time': 'Coreia do Sul - Coreia do Sul', 'hora': '17:08'}, \
-            { 'time': 'Dinamarca', 'hora': '17:32'}, 
-            { 'time': 'Argentina', 'hora': '17:35'}, \
-            { 'time': 'Espanha', 'hora' : '17:47' }, \
-            { 'time': 'Sérvia', 'hora' : '18:02' }, \
-            { 'time': 'México', 'hora' : '18:26' }, \
-            { 'time': 'Croácia', 'hora' : '18:32' },
-            { 'time': 'Senegal', 'hora': '18:59'}, \
-            { 'time': 'Tunísia', 'hora': '19:08'}, 
-            { 'time': 'Espanha', 'hora' : '19:29' }, \
-            { 'time': 'Coreia do Sul - Coreia do Sul', 'hora': '19:35'}, \
-            { 'time': 'Dinamarca', 'hora': '19:59'}, 
-            { 'time': 'Argentina', 'hora': '20:02'}, \
-            { 'time': 'Espanha', 'hora' : '20:14' }, \
-            { 'time': 'Sérvia', 'hora' : '20:29' }, \
-            { 'time': 'México', 'hora' : '20:53' }, \
-            { 'time': 'México', 'hora' : '21:23' }, \
-            { 'time': 'Croácia', 'hora' : '21:29' },
-            { 'time': 'Senegal', 'hora': '21:56'}, \
-            { 'time': 'Tunísia', 'hora': '22:05'}, 
-            { 'time': 'Espanha', 'hora' : '22:26' }, \
-            { 'time': 'Coreia do Sul - Coreia do Sul', 'hora': '22:32'}, \
-            { 'time': 'Dinamarca', 'hora': '22:56'}, 
-            { 'time': 'Argentina', 'hora': '22:59'}, \
-            { 'time': 'Espanha', 'hora' : '23:11' }, \
-            { 'time': 'Sérvia', 'hora' : '23:26' }, \
-            { 'time': 'México', 'hora' : '23:50' },
-            { 'time': 'Croácia', 'hora' : '23:56' },]
+        self.lista_horarios = [ { 'adversario' : 'Catar', 'time': 'Senegal', 'hora': '00:23' }, \
+            { 'adversario' : 'Austrália - Austrália', 'time': 'Tunísia', 'hora': '00:32'}, \
+            { 'adversario' : 'Alemanha', 'time': 'Espanha', 'hora': '00:53'}, \
+            { 'adversario' : 'Gana', 'time': 'Coreia do Sul - Coreia do Sul', 'hora': '00:59'}, \
+            { 'adversario' : 'Austrália', 'time': 'Dinamarca', 'hora': '01:23'}, 
+            { 'adversario' : 'Polônia', 'time': 'Argentina', 'hora': '01:26'}, \
+            { 'adversario' : 'Marrocos', 'time': 'Canadá', 'hora': '01:35'}, \
+            { 'adversario' : 'Japão', 'time': 'Espanha', 'hora' : '01:38' }, \
+            { 'adversario' : 'Suíça', 'time': 'Sérvia', 'hora' : '01:53' }, \
+            { 'adversario' : 'Polônia', 'time': 'México', 'hora' : '02:17' }, \
+            { 'adversario' : 'Marrocos', 'time': 'Croácia', 'hora' : '02:23' },
+            { 'adversario' : 'Austrália', 'time': 'Dinamarca', 'hora': '02:50'}, 
+            { 'adversario' : 'Polônia', 'time': 'Argentina', 'hora': '02:53'}, \
+            { 'adversario' : 'Marrocos', 'time': 'Canadá', 'hora': '03:02'}, \
+            { 'adversario' : 'Japão', 'time': 'Espanha', 'hora' : '03:05' }, \
+            { 'adversario' : 'Suíça', 'time': 'Sérvia', 'hora' : '03:20' }, \
+            { 'adversario' : 'Polônia', 'time': 'México', 'hora' : '03:44' }, \
+            { 'adversario' : 'Marrocos', 'time': 'Croácia', 'hora' : '03:50' },
+            { 'adversario' : 'Catar', 'time': 'Senegal', 'hora': '04:17'}, \
+            { 'adversario' : 'Austrália - Austrália', 'time': 'Tunísia', 'hora': '04:26'}, \
+            { 'adversario' : 'Alemanha', 'time': 'Espanha', 'hora' : '04:47' }, \
+            { 'adversario' : 'Gana', 'time': 'Coreia do Sul - Coreia do Sul', 'hora': '04:53'}, \
+            { 'adversario' : 'Austrália', 'time': 'Dinamarca', 'hora': '05:17'}, 
+            { 'adversario' : 'Polônia', 'time': 'Argentina', 'hora': '05:20'}, \
+            { 'adversario' : 'Marrocos', 'time': 'Canadá', 'hora': '05:29'}, \
+            { 'adversario' : 'Japão', 'time': 'Espanha', 'hora' : '05:32' }, \
+            { 'adversario' : 'Suíça', 'time': 'Sérvia', 'hora' : '05:47' }, \
+            { 'adversario' : 'Polônia', 'time': 'México', 'hora' : '06:11' }, \
+            { 'adversario' : 'Marrocos', 'time': 'Croácia', 'hora' : '06:17' },
+            { 'adversario' : 'Catar', 'time': 'Senegal', 'hora': '06:44'}, \
+            { 'adversario' : 'Austrália - Austrália', 'time': 'Tunísia', 'hora': '06:53'},              
+            { 'adversario' : 'Alemanha', 'time': 'Espanha', 'hora' : '07:14' }, \
+            { 'adversario' : 'Gana', 'time': 'Coreia do Sul - Coreia do Sul', 'hora': '07:20'}, \
+            { 'adversario' : 'Austrália', 'time': 'Dinamarca', 'hora': '07:44'}, 
+            { 'adversario' : 'Polônia', 'time': 'Argentina', 'hora': '07:47'}, \
+            { 'adversario' : 'Marrocos', 'time': 'Canadá', 'hora': '07:56'}, \
+            { 'adversario' : 'Japão', 'time': 'Espanha', 'hora' : '07:59' }, \
+            { 'adversario' : 'Suíça', 'time': 'Sérvia', 'hora' : '08:14' }, \
+            { 'adversario' : 'Polônia', 'time': 'México', 'hora' : '08:38' }, \
+            { 'adversario' : 'Marrocos', 'time': 'Croácia', 'hora' : '08:44' },
+            { 'adversario' : 'Catar', 'time': 'Senegal', 'hora': '09:11'}, \
+            { 'adversario' : 'Austrália - Austrália', 'time': 'Tunísia', 'hora': '09:20'}, 
+            { 'adversario' : 'Alemanha', 'time': 'Espanha', 'hora' : '09:41' }, \
+            { 'adversario' : 'Gana', 'time': 'Coreia do Sul - Coreia do Sul', 'hora': '09:47'}, \
+            { 'adversario' : 'Austrália', 'time': 'Dinamarca', 'hora': '10:11'}, 
+            { 'adversario' : 'Polônia', 'time': 'Argentina', 'hora': '10:14'}, \
+            { 'adversario' : 'Marrocos', 'time': 'Canadá', 'hora': '10:23'}, \
+            { 'adversario' : 'Japão', 'time': 'Espanha', 'hora' : '10:26' }, \
+            { 'adversario' : 'Suíça', 'time': 'Sérvia', 'hora' : '10:41' }, \
+            { 'adversario' : 'Polônia', 'time': 'México', 'hora' : '11:05' }, \
+            { 'adversario' : 'Marrocos', 'time': 'Croácia', 'hora' : '11:11' },
+            { 'adversario' : 'Catar', 'time': 'Senegal', 'hora': '11:38'}, \
+            { 'adversario' : 'Austrália - Austrália', 'time': 'Tunísia', 'hora': '11:47'}, 
+            { 'adversario' : 'Alemanha', 'time': 'Espanha', 'hora' : '12:08' }, \
+            { 'adversario' : 'Gana', 'time': 'Coreia do Sul - Coreia do Sul', 'hora': '12:14'}, \
+            { 'adversario' : 'Austrália', 'time': 'Dinamarca', 'hora': '12:38'}, 
+            { 'adversario' : 'Polônia', 'time': 'Argentina', 'hora': '12:41'}, \
+            { 'adversario' : 'Marrocos', 'time': 'Canadá', 'hora': '12:50'}, \
+            { 'adversario' : 'Japão', 'time': 'Espanha', 'hora' : '12:53' }, \
+            { 'adversario' : 'Suíça', 'time': 'Sérvia', 'hora' : '13:08' }, \
+            { 'adversario' : 'Polônia', 'time': 'México', 'hora' : '13:32' }, \
+            { 'adversario' : 'Marrocos', 'time': 'Croácia', 'hora' : '13:38' },
+            { 'adversario' : 'Catar', 'time': 'Senegal', 'hora': '14:05'}, \
+            { 'adversario' : 'Austrália - Austrália', 'time': 'Tunísia', 'hora': '14:14'}, 
+            { 'adversario' : 'Alemanha', 'time': 'Espanha', 'hora' : '14:35' }, \
+            { 'adversario' : 'Gana', 'time': 'Coreia do Sul - Coreia do Sul', 'hora': '14:41'}, \
+            { 'adversario' : 'Austrália', 'time': 'Dinamarca', 'hora': '15:05'}, 
+            { 'adversario' : 'Polônia', 'time': 'Argentina', 'hora': '15:08'}, \
+            { 'adversario' : 'Marrocos', 'time': 'Canadá', 'hora': '15:17'}, \
+            { 'adversario' : 'Japão', 'time': 'Espanha', 'hora' : '15:20' }, \
+            { 'adversario' : 'Suíça', 'time': 'Sérvia', 'hora' : '15:35' }, \
+            { 'adversario' : 'Polônia', 'time': 'México', 'hora' : '15:59' }, \
+            { 'adversario' : 'Marrocos', 'time': 'Croácia', 'hora' : '16:05' },
+            { 'adversario' : 'Catar', 'time': 'Senegal', 'hora': '16:32'}, \
+            { 'adversario' : 'Austrália - Austrália', 'time': 'Tunísia', 'hora': '16:41'}, 
+            { 'adversario' : 'Alemanha', 'time': 'Espanha', 'hora' : '17:02' }, \
+            { 'adversario' : 'Gana', 'time': 'Coreia do Sul - Coreia do Sul', 'hora': '17:08'}, \
+            { 'adversario' : 'Austrália', 'time': 'Dinamarca', 'hora': '17:32'}, 
+            { 'adversario' : 'Polônia', 'time': 'Argentina', 'hora': '17:35'}, \
+            { 'adversario' : 'Marrocos', 'time': 'Canadá', 'hora': '17:44'}, \
+            { 'adversario' : 'Japão', 'time': 'Espanha', 'hora' : '17:47' }, \
+            { 'adversario' : 'Suíça', 'time': 'Sérvia', 'hora' : '18:02' }, \
+            { 'adversario' : 'Polônia', 'time': 'México', 'hora' : '18:26' }, \
+            { 'adversario' : 'Marrocos', 'time': 'Croácia', 'hora' : '18:32' },
+            { 'adversario' : 'Catar', 'time': 'Senegal', 'hora': '18:59'}, \
+            { 'adversario' : 'Austrália - Austrália', 'time': 'Tunísia', 'hora': '19:08'}, 
+            { 'adversario' : 'Alemanha', 'time': 'Espanha', 'hora' : '19:29' }, \
+            { 'adversario' : 'Gana', 'time': 'Coreia do Sul - Coreia do Sul', 'hora': '19:35'}, \
+            { 'adversario' : 'Austrália', 'time': 'Dinamarca', 'hora': '19:59'}, 
+            { 'adversario' : 'Polônia', 'time': 'Argentina', 'hora': '20:02'}, \
+            { 'adversario' : 'Marrocos', 'time': 'Canadá', 'hora': '20:11'}, \
+            { 'adversario' : 'Japão', 'time': 'Espanha', 'hora' : '20:14' }, \
+            { 'adversario' : 'Suíça', 'time': 'Sérvia', 'hora' : '20:29' }, \
+            { 'adversario' : 'Polônia', 'time': 'México', 'hora' : '20:53' }, \
+            { 'adversario' : 'Polônia', 'time': 'México', 'hora' : '21:23' }, \
+            { 'adversario' : 'Marrocos', 'time': 'Croácia', 'hora' : '21:29' },
+            { 'adversario' : 'Catar', 'time': 'Senegal', 'hora': '21:56'}, \
+            { 'adversario' : 'Austrália - Austrália', 'time': 'Tunísia', 'hora': '22:05'}, 
+            { 'adversario' : 'Alemanha', 'time': 'Espanha', 'hora' : '22:26' }, \
+            { 'adversario' : 'Gana', 'time': 'Coreia do Sul - Coreia do Sul', 'hora': '22:32'}, \
+            { 'adversario' : 'Austrália', 'time': 'Dinamarca', 'hora': '22:56'}, 
+            { 'adversario' : 'Polônia', 'time': 'Argentina', 'hora': '22:59'}, \
+            { 'adversario' : 'Marrocos', 'time': 'Canadá', 'hora': '23:08'}, \
+            { 'adversario' : 'Japão', 'time': 'Espanha', 'hora' : '23:11' }, \
+            { 'adversario' : 'Suíça', 'time': 'Sérvia', 'hora' : '23:26' }, \
+            { 'adversario' : 'Polônia', 'time': 'México', 'hora' : '23:50' },
+            { 'adversario' : 'Marrocos', 'time': 'Croácia', 'hora' : '23:56' },]
         return
 
     def acessa(self, site):
@@ -350,6 +361,7 @@ class ChromeAuto():
         except Exception as e:
             print("APOSTA JÁ FECHADA...")
             print('Algo saiu errado no analisa_odds')
+            self.chrome.quit()
             print(e)
 
     def le_saldo(self):
@@ -466,7 +478,6 @@ class ChromeAuto():
             if self.saldo <= self.saldo_antes_aposta:
                 if self.usa_perda_acumulada:
                     self.perda_acumulada += self.valor_aposta
-
                 else:
                     self.perda_acumulada = 0.0
                 self.contador_perdas += 1
@@ -480,7 +491,11 @@ class ChromeAuto():
                 self.telegram_bot.envia_mensagem(f'GANHOU! SALDO: R$ {self.saldo}')
                 self.atualiza_meta_e_valor_aposta()
 
-            if self.perdidas_em_sequencia >= 2:
+            if self.usa_perda_acumulada:
+                if self.perdidas_em_sequencia == self.numero_jogos_martingale:
+                    self.perda_acumulada = 0.0
+                    self.perdidas_em_sequencia = 0
+            else:
                 self.perda_acumulada = 0.0
 
             if self.saldo >= self.meta - 0.5:
@@ -530,13 +545,18 @@ if __name__ == '__main__':
     else:
         usa_perda_acumulada = False
 
+    numero_jogos_martingale = 0
+    if usa_perda_acumulada:
+        print('ATÉ QUANTAS PERDAS QUER USAR O MARTINGALE?')
+        numero_jogos_martingale = int(sys.argv[6]) if len(sys.argv) > 6 else int(input())
+
     print('O QUE DESEJA FAZER AO ATINGIR A META?')
     print('(1) FECHAR O APLICATIVO')
     print('(2) DESLIGAR O COMPUTADOR')
     print('(3) RECALCULAR META E CONTINUAR APOSTANDO')
-    ao_atingir_meta = int(sys.argv[6]) if len(sys.argv) > 6 else int(input())      
+    ao_atingir_meta = int(sys.argv[7]) if len(sys.argv) > 7 else int(input())      
 
-    chrome = ChromeAuto(meta=meta, tipo_valor=tipo_valor, valor_aposta=valor_aposta, tipo_meta=tipo_meta, usa_perda_acumulada=usa_perda_acumulada )
+    chrome = ChromeAuto(meta=meta, tipo_valor=tipo_valor, valor_aposta=valor_aposta, tipo_meta=tipo_meta, usa_perda_acumulada=usa_perda_acumulada, numero_jogos_martingale=numero_jogos_martingale )
 
     indice_jogo = chrome.seleciona_indice_jogo()
     numero_jogos = len( chrome.lista_horarios)
