@@ -45,62 +45,93 @@ class ChromeAuto():
         self.controla_jogo_acima_abaixo = 0
         self.n_jogos_alesta_sistema_rodando = 14
         self.nome_time = None
+        self.primeira_execucao = True
         self.lista_horarios = [ { 'time': 'Senegal', 'hora': '00:23'}, \
             { 'time': 'Tunísia', 'hora': '00:32'}, \
             { 'time': 'Espanha', 'hora': '00:53'}, \
             { 'time': 'Coreia do Sul - Coreia do Sul', 'hora': '00:59'}, \
+            { 'time': 'Dinamarca', 'hora': '01:23'}, 
+            { 'time': 'Argentina', 'hora': '01:26'}, \
             { 'time': 'Espanha', 'hora' : '01:38' }, \
+            { 'time': 'Sérvia', 'hora' : '01:53' }, \
             { 'time': 'México', 'hora' : '02:17' }, \
+            { 'time': 'Dinamarca', 'hora': '02:50'}, 
+            { 'time': 'Argentina', 'hora': '02:53'}, \
             { 'time': 'Espanha', 'hora' : '03:05' }, \
+            { 'time': 'Sérvia', 'hora' : '03:20' }, \
             { 'time': 'México', 'hora' : '03:44' }, \
             { 'time': 'Senegal', 'hora': '04:17'}, \
             { 'time': 'Tunísia', 'hora': '04:26'}, \
             { 'time': 'Espanha', 'hora' : '04:47' }, \
             { 'time': 'Coreia do Sul - Coreia do Sul', 'hora': '04:53'}, \
+            { 'time': 'Dinamarca', 'hora': '05:17'}, 
+            { 'time': 'Argentina', 'hora': '05:20'}, \
             { 'time': 'Espanha', 'hora' : '05:32' }, \
+            { 'time': 'Sérvia', 'hora' : '05:47' }, \
             { 'time': 'México', 'hora' : '06:11' }, \
             { 'time': 'Senegal', 'hora': '06:44'}, \
             { 'time': 'Tunísia', 'hora': '06:53'},              
             { 'time': 'Espanha', 'hora' : '07:14' }, \
             { 'time': 'Coreia do Sul - Coreia do Sul', 'hora': '07:20'}, \
+            { 'time': 'Dinamarca', 'hora': '07:44'}, 
+            { 'time': 'Argentina', 'hora': '07:47'}, \
             { 'time': 'Espanha', 'hora' : '07:59' }, \
+            { 'time': 'Sérvia', 'hora' : '08:14' }, \
             { 'time': 'México', 'hora' : '08:38' }, \
             { 'time': 'Senegal', 'hora': '09:11'}, \
             { 'time': 'Tunísia', 'hora': '09:20'}, 
             { 'time': 'Espanha', 'hora' : '09:41' }, \
             { 'time': 'Coreia do Sul - Coreia do Sul', 'hora': '09:47'}, \
+            { 'time': 'Dinamarca', 'hora': '10:11'}, 
+            { 'time': 'Argentina', 'hora': '10:14'}, \
             { 'time': 'Espanha', 'hora' : '10:26' }, \
+            { 'time': 'Sérvia', 'hora' : '10:41' }, \
             { 'time': 'México', 'hora' : '11:05' }, \
             { 'time': 'Senegal', 'hora': '11:38'}, \
             { 'time': 'Tunísia', 'hora': '11:47'}, 
             { 'time': 'Espanha', 'hora' : '12:08' }, \
             { 'time': 'Coreia do Sul - Coreia do Sul', 'hora': '12:14'}, \
+            { 'time': 'Dinamarca', 'hora': '12:38'}, 
+            { 'time': 'Argentina', 'hora': '12:41'}, \
             { 'time': 'Espanha', 'hora' : '12:53' }, \
+            { 'time': 'Sérvia', 'hora' : '13:08' }, \
             { 'time': 'México', 'hora' : '13:32' }, \
             { 'time': 'Senegal', 'hora': '14:05'}, \
             { 'time': 'Tunísia', 'hora': '14:14'}, 
             { 'time': 'Espanha', 'hora' : '14:35' }, \
             { 'time': 'Coreia do Sul - Coreia do Sul', 'hora': '14:41'}, \
+            { 'time': 'Dinamarca', 'hora': '15:05'}, 
+            { 'time': 'Argentina', 'hora': '15:08'}, \
             { 'time': 'Espanha', 'hora' : '15:20' }, \
+            { 'time': 'Sérvia', 'hora' : '15:35' }, \
             { 'time': 'México', 'hora' : '15:59' }, \
             { 'time': 'Senegal', 'hora': '16:32'}, \
             { 'time': 'Tunísia', 'hora': '16:41'}, 
             { 'time': 'Espanha', 'hora' : '17:02' }, \
             { 'time': 'Coreia do Sul - Coreia do Sul', 'hora': '17:08'}, \
+            { 'time': 'Dinamarca', 'hora': '17:32'}, 
+            { 'time': 'Argentina', 'hora': '17:35'}, \
             { 'time': 'Espanha', 'hora' : '17:47' }, \
+            { 'time': 'Sérvia', 'hora' : '18:02' }, \
             { 'time': 'México', 'hora' : '18:26' }, \
             { 'time': 'Senegal', 'hora': '18:59'}, \
             { 'time': 'Tunísia', 'hora': '19:08'}, 
             { 'time': 'Espanha', 'hora' : '19:29' }, \
             { 'time': 'Coreia do Sul - Coreia do Sul', 'hora': '19:35'}, \
+            { 'time': 'Dinamarca', 'hora': '19:59'}, 
+            { 'time': 'Argentina', 'hora': '20:02'}, \
             { 'time': 'Espanha', 'hora' : '20:14' }, \
+            { 'time': 'Sérvia', 'hora' : '20:29' }, \
             { 'time': 'México', 'hora' : '20:53' }, \
             { 'time': 'México', 'hora' : '21:23' }, \
             { 'time': 'Senegal', 'hora': '21:56'}, \
             { 'time': 'Tunísia', 'hora': '22:05'}, 
             { 'time': 'Espanha', 'hora' : '22:26' }, \
             { 'time': 'Coreia do Sul - Coreia do Sul', 'hora': '22:32'}, \
+            { 'time': 'Dinamarca', 'hora': '22:56'}, 
+            { 'time': 'Argentina', 'hora': '22:59'}, \
             { 'time': 'Espanha', 'hora' : '23:11' }, \
+            { 'time': 'Sérvia', 'hora' : '23:26' }, \
             { 'time': 'México', 'hora' : '23:50' }]
         return
 
@@ -150,14 +181,16 @@ class ChromeAuto():
             # saldo inicial não pode ser alterado ao longo de toda uma rodada
             self.saldo_inicial = self.saldo
 
-            self.atualiza_meta_e_valor_aposta()
+            if self.primeira_execucao:
+                self.atualiza_meta_e_valor_aposta()
+                self.telegram_bot.envia_mensagem(f'SALDO ATUAL: {self.saldo}\nVALOR POR APOSTA: {self.valor_aposta:.2f}\nMETA: { self.meta:.2f}')
+                self.primeira_execucao = False
 
             print(f'VALOR POR APOSTA: {self.valor_aposta:.2f}')        
-            print(f'META: { self.meta:.2f}')
-            self.telegram_bot.envia_mensagem(f'SALDO ATUAL: {self.saldo}\nVALOR POR APOSTA: {self.valor_aposta:.2f}\nMETA: { self.meta:.2f}')
+            print(f'META: { self.meta:.2f}')            
 
             virtuais = WebDriverWait(self.chrome, 20).until(
-                EC.element_to_be_clickable((By.XPATH, "/html/body/vn-app/vn-dynamic-layout-single-slot[2]/vn-header/header/vn-dynamic-layout-multi-slot[2]/ms-navigation/div[1]/nav/ms-main-items/div/vn-menu-item[8]/a" ) )) 
+                EC.element_to_be_clickable((By.XPATH, f"//*[normalize-space(text()) = 'Virtuais']/ancestor::a" ) )) 
             virtuais.click() 
 
             sleep(2)
@@ -227,6 +260,9 @@ class ChromeAuto():
             self.valor_aposta = ( self.saldo_inicial * self.valor_aposta_inicial / 100 + self.perda_acumulada )
         elif self.tipo_valor == TipoValorAposta.VALOR_ABSOLUTO:
             self.valor_aposta = ( self.valor_aposta_inicial + self.perda_acumulada )
+
+        if self.valor_aposta < 2.0:
+            self.valor_aposta = 2.0
 
         print(f'PERDA ACUMULADA: {self.perda_acumulada:.2f} R$')
         print(f'VALOR DA APOSTA: {self.valor_aposta:.2f} R$')                    
@@ -420,6 +456,7 @@ class ChromeAuto():
             if self.saldo <= self.saldo_antes_aposta:
                 if self.usa_perda_acumulada:
                     self.perda_acumulada += self.valor_aposta
+
                 else:
                     self.perda_acumulada = 0.0
                 self.contador_perdas += 1
@@ -431,8 +468,9 @@ class ChromeAuto():
             if self.saldo_inicial < self.saldo:
                 self.saldo_inicial = self.saldo
                 self.telegram_bot.envia_mensagem(f'GANHOU! SALDO: R$ {self.saldo}')
+                self.atualiza_meta_e_valor_aposta()
 
-            if self.perdidas_em_sequencia == 2:
+            if self.perdidas_em_sequencia >= 2:
                 self.perda_acumulada = 0.0
 
             if self.saldo >= self.meta - 0.5:
@@ -500,7 +538,7 @@ if __name__ == '__main__':
         hora = int(hora_jogo_atual.split(':')[0])
         minuto = int(hora_jogo_atual.split(':')[1])
         if hora_jogo_atual == chrome.lista_horarios[0].get('hora'):
-            now = datetime.today + timedelta(hours=3)
+            now = datetime.today() + timedelta(hours=3)
         else:
             now = datetime.today()  
         hora_do_jogo = datetime( now.year, now.month, now.day, hora, minuto, 0)
