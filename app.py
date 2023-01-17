@@ -55,11 +55,13 @@ class ChromeAuto():
             { 'time': 'Espanha', 'hora' : '01:38' }, \
             { 'time': 'Sérvia', 'hora' : '01:53' }, \
             { 'time': 'México', 'hora' : '02:17' }, \
+            { 'time': 'Croácia', 'hora' : '02:23' },
             { 'time': 'Dinamarca', 'hora': '02:50'}, 
             { 'time': 'Argentina', 'hora': '02:53'}, \
             { 'time': 'Espanha', 'hora' : '03:05' }, \
             { 'time': 'Sérvia', 'hora' : '03:20' }, \
             { 'time': 'México', 'hora' : '03:44' }, \
+            { 'time': 'Croácia', 'hora' : '03:50' },
             { 'time': 'Senegal', 'hora': '04:17'}, \
             { 'time': 'Tunísia', 'hora': '04:26'}, \
             { 'time': 'Espanha', 'hora' : '04:47' }, \
@@ -69,6 +71,7 @@ class ChromeAuto():
             { 'time': 'Espanha', 'hora' : '05:32' }, \
             { 'time': 'Sérvia', 'hora' : '05:47' }, \
             { 'time': 'México', 'hora' : '06:11' }, \
+            { 'time': 'Croácia', 'hora' : '06:17' },
             { 'time': 'Senegal', 'hora': '06:44'}, \
             { 'time': 'Tunísia', 'hora': '06:53'},              
             { 'time': 'Espanha', 'hora' : '07:14' }, \
@@ -78,6 +81,7 @@ class ChromeAuto():
             { 'time': 'Espanha', 'hora' : '07:59' }, \
             { 'time': 'Sérvia', 'hora' : '08:14' }, \
             { 'time': 'México', 'hora' : '08:38' }, \
+            { 'time': 'Croácia', 'hora' : '08:44' },
             { 'time': 'Senegal', 'hora': '09:11'}, \
             { 'time': 'Tunísia', 'hora': '09:20'}, 
             { 'time': 'Espanha', 'hora' : '09:41' }, \
@@ -87,6 +91,7 @@ class ChromeAuto():
             { 'time': 'Espanha', 'hora' : '10:26' }, \
             { 'time': 'Sérvia', 'hora' : '10:41' }, \
             { 'time': 'México', 'hora' : '11:05' }, \
+            { 'time': 'Croácia', 'hora' : '11:11' },
             { 'time': 'Senegal', 'hora': '11:38'}, \
             { 'time': 'Tunísia', 'hora': '11:47'}, 
             { 'time': 'Espanha', 'hora' : '12:08' }, \
@@ -96,6 +101,7 @@ class ChromeAuto():
             { 'time': 'Espanha', 'hora' : '12:53' }, \
             { 'time': 'Sérvia', 'hora' : '13:08' }, \
             { 'time': 'México', 'hora' : '13:32' }, \
+            { 'time': 'Croácia', 'hora' : '13:38' },
             { 'time': 'Senegal', 'hora': '14:05'}, \
             { 'time': 'Tunísia', 'hora': '14:14'}, 
             { 'time': 'Espanha', 'hora' : '14:35' }, \
@@ -105,6 +111,7 @@ class ChromeAuto():
             { 'time': 'Espanha', 'hora' : '15:20' }, \
             { 'time': 'Sérvia', 'hora' : '15:35' }, \
             { 'time': 'México', 'hora' : '15:59' }, \
+            { 'time': 'Croácia', 'hora' : '16:05' },
             { 'time': 'Senegal', 'hora': '16:32'}, \
             { 'time': 'Tunísia', 'hora': '16:41'}, 
             { 'time': 'Espanha', 'hora' : '17:02' }, \
@@ -114,6 +121,7 @@ class ChromeAuto():
             { 'time': 'Espanha', 'hora' : '17:47' }, \
             { 'time': 'Sérvia', 'hora' : '18:02' }, \
             { 'time': 'México', 'hora' : '18:26' }, \
+            { 'time': 'Croácia', 'hora' : '18:32' },
             { 'time': 'Senegal', 'hora': '18:59'}, \
             { 'time': 'Tunísia', 'hora': '19:08'}, 
             { 'time': 'Espanha', 'hora' : '19:29' }, \
@@ -124,6 +132,7 @@ class ChromeAuto():
             { 'time': 'Sérvia', 'hora' : '20:29' }, \
             { 'time': 'México', 'hora' : '20:53' }, \
             { 'time': 'México', 'hora' : '21:23' }, \
+            { 'time': 'Croácia', 'hora' : '21:29' },
             { 'time': 'Senegal', 'hora': '21:56'}, \
             { 'time': 'Tunísia', 'hora': '22:05'}, 
             { 'time': 'Espanha', 'hora' : '22:26' }, \
@@ -132,7 +141,8 @@ class ChromeAuto():
             { 'time': 'Argentina', 'hora': '22:59'}, \
             { 'time': 'Espanha', 'hora' : '23:11' }, \
             { 'time': 'Sérvia', 'hora' : '23:26' }, \
-            { 'time': 'México', 'hora' : '23:50' }]
+            { 'time': 'México', 'hora' : '23:50' },
+            { 'time': 'Croácia', 'hora' : '23:56' },]
         return
 
     def acessa(self, site):
