@@ -53,18 +53,24 @@ class ChromeAuto():
             { 'adversario' : 'Alemanha', 'time': 'Espanha', 'hora': '00:53'}, \
             { 'adversario' : 'Sérvia', 'time': 'Camarões', 'hora': '00:56'},
             { 'adversario' : 'Gana', 'time': 'Coreia do Sul - Coreia do Sul', 'hora': '00:59'}, \
+            { 'adversario' : 'Senegal', 'time': 'Equador', 'hora': '01:11'}, \
+            { 'adversario' : 'Irã', 'time': 'EUA', 'hora': '01:17'}, \
             { 'adversario' : 'Austrália - Austrália', 'time': 'Dinamarca', 'hora': '01:23'}, 
             { 'adversario' : 'Polônia', 'time': 'Argentina', 'hora': '01:26'}, \
             { 'adversario' : 'Marrocos', 'time': 'Canadá', 'hora': '01:35'}, \
             { 'adversario' : 'Japão', 'time': 'Espanha', 'hora' : '01:38' }, \
             { 'adversario' : 'Suiça', 'time': 'Sérvia', 'hora' : '01:53' }, \
+            { 'adversario' : 'Holanda', 'time': 'Senegal', 'hora' : '02:05' }, \
             { 'adversario' : 'Polônia', 'time': 'México', 'hora' : '02:17' }, \
             { 'adversario' : 'Marrocos', 'time': 'Croácia', 'hora' : '02:23' },
+            { 'adversario' : 'Senegal', 'time': 'Equador', 'hora': '02:38'}, \
+            { 'adversario' : 'Irã', 'time': 'EUA', 'hora': '02:44'}, \
             { 'adversario' : 'Austrália - Austrália', 'time': 'Dinamarca', 'hora': '02:50'}, 
             { 'adversario' : 'Polônia', 'time': 'Argentina', 'hora': '02:53'}, \
             { 'adversario' : 'Marrocos', 'time': 'Canadá', 'hora': '03:02'}, \
             { 'adversario' : 'Japão', 'time': 'Espanha', 'hora' : '03:05' }, \
             { 'adversario' : 'Suiça', 'time': 'Sérvia', 'hora' : '03:20' }, \
+            { 'adversario' : 'Holanda', 'time': 'Senegal', 'hora' : '03:32' }, \
             { 'adversario' : 'Polônia', 'time': 'México', 'hora' : '03:44' }, \
             { 'adversario' : 'Marrocos', 'time': 'Croácia', 'hora' : '03:50' },
             { 'adversario' : 'Catar', 'time': 'Senegal', 'hora': '04:17'}, \
@@ -72,11 +78,14 @@ class ChromeAuto():
             { 'adversario' : 'Alemanha', 'time': 'Espanha', 'hora' : '04:47' }, \
             { 'adversario' : 'Sérvia', 'time': 'Camarões', 'hora': '04:50'},
             { 'adversario' : 'Gana', 'time': 'Coreia do Sul - Coreia do Sul', 'hora': '04:53'}, \
+            { 'adversario' : 'Senegal', 'time': 'Equador', 'hora': '05:05'}, \
+            { 'adversario' : 'Irã', 'time': 'EUA', 'hora': '05:11'}, \
             { 'adversario' : 'Austrália - Austrália', 'time': 'Dinamarca', 'hora': '05:17'}, 
             { 'adversario' : 'Polônia', 'time': 'Argentina', 'hora': '05:20'}, \
             { 'adversario' : 'Marrocos', 'time': 'Canadá', 'hora': '05:29'}, \
             { 'adversario' : 'Japão', 'time': 'Espanha', 'hora' : '05:32' }, \
             { 'adversario' : 'Suiça', 'time': 'Sérvia', 'hora' : '05:47' }, \
+            { 'adversario' : 'Holanda', 'time': 'Senegal', 'hora' : '05:59' }, \
             { 'adversario' : 'Polônia', 'time': 'México', 'hora' : '06:11' }, \
             { 'adversario' : 'Marrocos', 'time': 'Croácia', 'hora' : '06:17' },
             { 'adversario' : 'Catar', 'time': 'Senegal', 'hora': '06:44'}, \
@@ -84,11 +93,14 @@ class ChromeAuto():
             { 'adversario' : 'Alemanha', 'time': 'Espanha', 'hora' : '07:14' }, \
             { 'adversario' : 'Sérvia', 'time': 'Camarões', 'hora': '07:17'},
             { 'adversario' : 'Gana', 'time': 'Coreia do Sul - Coreia do Sul', 'hora': '07:20'}, \
+            { 'adversario' : 'Senegal', 'time': 'Equador', 'hora': '07:32'}, \
+            { 'adversario' : 'Irã', 'time': 'EUA', 'hora': '07:38'}, \
             { 'adversario' : 'Austrália - Austrália', 'time': 'Dinamarca', 'hora': '07:44'}, 
             { 'adversario' : 'Polônia', 'time': 'Argentina', 'hora': '07:47'}, \
             { 'adversario' : 'Marrocos', 'time': 'Canadá', 'hora': '07:56'}, \
             { 'adversario' : 'Japão', 'time': 'Espanha', 'hora' : '07:59' }, \
             { 'adversario' : 'Suiça', 'time': 'Sérvia', 'hora' : '08:14' }, \
+            { 'adversario' : 'Holanda', 'time': 'Senegal', 'hora' : '08:26' }, \
             { 'adversario' : 'Polônia', 'time': 'México', 'hora' : '08:38' }, \
             { 'adversario' : 'Marrocos', 'time': 'Croácia', 'hora' : '08:44' },
             { 'adversario' : 'Catar', 'time': 'Senegal', 'hora': '09:11'}, \
@@ -96,11 +108,14 @@ class ChromeAuto():
             { 'adversario' : 'Alemanha', 'time': 'Espanha', 'hora' : '09:41' }, \
             { 'adversario' : 'Sérvia', 'time': 'Camarões', 'hora': '09:44'},
             { 'adversario' : 'Gana', 'time': 'Coreia do Sul - Coreia do Sul', 'hora': '09:47'}, \
+            { 'adversario' : 'Senegal', 'time': 'Equador', 'hora': '09:59'}, \
+            { 'adversario' : 'Irã', 'time': 'EUA', 'hora': '10:05'}, \
             { 'adversario' : 'Austrália - Austrália', 'time': 'Dinamarca', 'hora': '10:11'}, 
             { 'adversario' : 'Polônia', 'time': 'Argentina', 'hora': '10:14'}, \
             { 'adversario' : 'Marrocos', 'time': 'Canadá', 'hora': '10:23'}, \
             { 'adversario' : 'Japão', 'time': 'Espanha', 'hora' : '10:26' }, \
             { 'adversario' : 'Suiça', 'time': 'Sérvia', 'hora' : '10:41' }, \
+            { 'adversario' : 'Holanda', 'time': 'Senegal', 'hora' : '10:53' }, \
             { 'adversario' : 'Polônia', 'time': 'México', 'hora' : '11:05' }, \
             { 'adversario' : 'Marrocos', 'time': 'Croácia', 'hora' : '11:11' },
             { 'adversario' : 'Catar', 'time': 'Senegal', 'hora': '11:38'}, \
@@ -108,11 +123,14 @@ class ChromeAuto():
             { 'adversario' : 'Alemanha', 'time': 'Espanha', 'hora' : '12:08' }, \
             { 'adversario' : 'Sérvia', 'time': 'Camarões', 'hora': '12:11'},
             { 'adversario' : 'Gana', 'time': 'Coreia do Sul - Coreia do Sul', 'hora': '12:14'}, \
+            { 'adversario' : 'Senegal', 'time': 'Equador', 'hora': '12:26'}, \
+            { 'adversario' : 'Irã', 'time': 'EUA', 'hora': '12:32'}, \
             { 'adversario' : 'Austrália - Austrália', 'time': 'Dinamarca', 'hora': '12:38'}, 
             { 'adversario' : 'Polônia', 'time': 'Argentina', 'hora': '12:41'}, \
             { 'adversario' : 'Marrocos', 'time': 'Canadá', 'hora': '12:50'}, \
             { 'adversario' : 'Japão', 'time': 'Espanha', 'hora' : '12:53' }, \
             { 'adversario' : 'Suiça', 'time': 'Sérvia', 'hora' : '13:08' }, \
+            { 'adversario' : 'Holanda', 'time': 'Senegal', 'hora' : '13:20' }, \
             { 'adversario' : 'Polônia', 'time': 'México', 'hora' : '13:32' }, \
             { 'adversario' : 'Marrocos', 'time': 'Croácia', 'hora' : '13:38' },
             { 'adversario' : 'Catar', 'time': 'Senegal', 'hora': '14:05'}, \
@@ -120,11 +138,14 @@ class ChromeAuto():
             { 'adversario' : 'Alemanha', 'time': 'Espanha', 'hora' : '14:35' }, \
             { 'adversario' : 'Sérvia', 'time': 'Camarões', 'hora': '14:38'},
             { 'adversario' : 'Gana', 'time': 'Coreia do Sul - Coreia do Sul', 'hora': '14:41'}, \
+            { 'adversario' : 'Senegal', 'time': 'Equador', 'hora': '14:53'}, \
+            { 'adversario' : 'Irã', 'time': 'EUA', 'hora': '14:59'}, \
             { 'adversario' : 'Austrália - Austrália', 'time': 'Dinamarca', 'hora': '15:05'}, 
             { 'adversario' : 'Polônia', 'time': 'Argentina', 'hora': '15:08'}, \
             { 'adversario' : 'Marrocos', 'time': 'Canadá', 'hora': '15:17'}, \
             { 'adversario' : 'Japão', 'time': 'Espanha', 'hora' : '15:20' }, \
             { 'adversario' : 'Suiça', 'time': 'Sérvia', 'hora' : '15:35' }, \
+            { 'adversario' : 'Holanda', 'time': 'Senegal', 'hora' : '15:47' }, \
             { 'adversario' : 'Polônia', 'time': 'México', 'hora' : '15:59' }, \
             { 'adversario' : 'Marrocos', 'time': 'Croácia', 'hora' : '16:05' },
             { 'adversario' : 'Catar', 'time': 'Senegal', 'hora': '16:32'}, \
@@ -132,11 +153,14 @@ class ChromeAuto():
             { 'adversario' : 'Alemanha', 'time': 'Espanha', 'hora' : '17:02' }, \
             { 'adversario' : 'Sérvia', 'time': 'Camarões', 'hora': '17:05'},
             { 'adversario' : 'Gana', 'time': 'Coreia do Sul - Coreia do Sul', 'hora': '17:08'}, \
+            { 'adversario' : 'Senegal', 'time': 'Equador', 'hora': '17:20'}, \
+            { 'adversario' : 'Irã', 'time': 'EUA', 'hora': '17:26'}, \
             { 'adversario' : 'Austrália - Austrália', 'time': 'Dinamarca', 'hora': '17:32'}, 
             { 'adversario' : 'Polônia', 'time': 'Argentina', 'hora': '17:35'}, \
             { 'adversario' : 'Marrocos', 'time': 'Canadá', 'hora': '17:44'}, \
             { 'adversario' : 'Japão', 'time': 'Espanha', 'hora' : '17:47' }, \
             { 'adversario' : 'Suiça', 'time': 'Sérvia', 'hora' : '18:02' }, \
+            { 'adversario' : 'Holanda', 'time': 'Senegal', 'hora' : '18:14' }, \
             { 'adversario' : 'Polônia', 'time': 'México', 'hora' : '18:26' }, \
             { 'adversario' : 'Marrocos', 'time': 'Croácia', 'hora' : '18:32' },
             { 'adversario' : 'Catar', 'time': 'Senegal', 'hora': '18:59'}, \
@@ -144,12 +168,16 @@ class ChromeAuto():
             { 'adversario' : 'Alemanha', 'time': 'Espanha', 'hora' : '19:29' }, \
             { 'adversario' : 'Sérvia', 'time': 'Camarões', 'hora': '19:32'},
             { 'adversario' : 'Gana', 'time': 'Coreia do Sul - Coreia do Sul', 'hora': '19:35'}, \
+            { 'adversario' : 'Senegal', 'time': 'Equador', 'hora': '19:47'}, \
+            { 'adversario' : 'Irã', 'time': 'EUA', 'hora': '19:53'}, \
             { 'adversario' : 'Austrália - Austrália', 'time': 'Dinamarca', 'hora': '19:59'}, 
             { 'adversario' : 'Polônia', 'time': 'Argentina', 'hora': '20:02'}, \
             { 'adversario' : 'Marrocos', 'time': 'Canadá', 'hora': '20:11'}, \
             { 'adversario' : 'Japão', 'time': 'Espanha', 'hora' : '20:14' }, \
             { 'adversario' : 'Suiça', 'time': 'Sérvia', 'hora' : '20:29' }, \
+            { 'adversario' : 'Holanda', 'time': 'Senegal', 'hora' : '20:41' }, \
             { 'adversario' : 'Polônia', 'time': 'México', 'hora' : '20:53' }, \
+            { 'adversario' : 'Holanda', 'time': 'Senegal', 'hora' : '21:11' }, \
             { 'adversario' : 'Polônia', 'time': 'México', 'hora' : '21:23' }, \
             { 'adversario' : 'Marrocos', 'time': 'Croácia', 'hora' : '21:29' },
             { 'adversario' : 'Catar', 'time': 'Senegal', 'hora': '21:56'}, \
@@ -157,19 +185,21 @@ class ChromeAuto():
             { 'adversario' : 'Alemanha', 'time': 'Espanha', 'hora' : '22:26' }, \
             { 'adversario' : 'Sérvia', 'time': 'Camarões', 'hora': '22:29'},
             { 'adversario' : 'Gana', 'time': 'Coreia do Sul - Coreia do Sul', 'hora': '22:32'}, \
+            { 'adversario' : 'Senegal', 'time': 'Equador', 'hora': '22:44'}, \
             { 'adversario' : 'Austrália - Austrália', 'time': 'Dinamarca', 'hora': '22:56'}, 
             { 'adversario' : 'Polônia', 'time': 'Argentina', 'hora': '22:59'}, \
             { 'adversario' : 'Marrocos', 'time': 'Canadá', 'hora': '23:08'}, \
             { 'adversario' : 'Japão', 'time': 'Espanha', 'hora' : '23:11' }, \
             { 'adversario' : 'Suiça', 'time': 'Sérvia', 'hora' : '23:26' }, \
+            { 'adversario' : 'Holanda', 'time': 'Senegal', 'hora' : '23:38' }, \
             { 'adversario' : 'Polônia', 'time': 'México', 'hora' : '23:50' },
             { 'adversario' : 'Marrocos', 'time': 'Croácia', 'hora' : '23:56' },]
         return
 
-    def acessa(self, site):
+    def acessa(self, site):         
         self.driver_path = 'chromedriver'
         self.options = webdriver.ChromeOptions()
-        self.chrome = webdriver.Chrome(self.driver_path)
+        self.chrome = webdriver.Chrome(self.driver_path)     
         self.chrome.get(site)
         self.chrome.maximize_window()
 
@@ -209,13 +239,12 @@ class ChromeAuto():
             self.le_saldo()
             print(f'SALDO ATUAL: {self.saldo}')
 
-            # saldo inicial não pode ser alterado ao longo de toda uma rodada
+            # saldo inicial não pode ser alterado ao longo de toda uma rodada     
             self.saldo_inicial = self.saldo
 
-            if self.primeira_execucao:
-                self.atualiza_meta_e_valor_aposta()
-                self.telegram_bot.envia_mensagem(f'SALDO ATUAL: {self.saldo}\nVALOR POR APOSTA: {self.valor_aposta:.2f}\nMETA: { self.meta:.2f}')
-                self.primeira_execucao = False
+            self.atualiza_meta_e_valor_aposta()
+            self.telegram_bot.envia_mensagem(f'SALDO ATUAL: {self.saldo}\nVALOR POR APOSTA: {self.valor_aposta:.2f}\nMETA: { self.meta:.2f}')
+            self.primeira_execucao = False
 
             print(f'VALOR POR APOSTA: {self.valor_aposta:.2f}')        
             print(f'META: { self.meta:.2f}')            
@@ -582,6 +611,9 @@ if __name__ == '__main__':
 
     indice_jogo = chrome.seleciona_indice_jogo()
     numero_jogos = len( chrome.lista_horarios)
+    chrome.acessa('https://www.sportingbet.com/pt-br/labelhost/login')        
+    chrome.faz_login()  
+
     while True:
         ## aqui o sistema vai pausar até que faltem 5 minutos pra a partida
         hora_jogo_atual = chrome.lista_horarios[ indice_jogo % numero_jogos ].get('hora')
@@ -597,9 +629,6 @@ if __name__ == '__main__':
 
         print(f'ESPERANDO JOGO DAS {chrome.hora_jogo}')
         pause.until( hora_do_jogo - timedelta(minutes=3)  )
-
-        chrome.acessa('https://www.sportingbet.com/pt-br/labelhost/login')        
-        chrome.faz_login()  
 
         chrome.clica_horario_jogo(f"//*[normalize-space(text()) = '{ hora_jogo_atual }']")
 
