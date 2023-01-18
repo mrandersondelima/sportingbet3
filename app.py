@@ -16,6 +16,7 @@ import sys
 
 hora_jogo_atual = None
 
+# & C:/Python39/python.exe c:/Users/anderson.morais/Documents/dev/sportingbet3/app.py 2 5 4 100 1 20 1 2
 class ChromeAuto():
     def __init__(self, meta=0, tipo_valor=1, valor_aposta=None, tipo_meta=None, estilo_jogo=None, usa_perda_acumulada=False, numero_jogos_martingale=0, aposta_no_favorito=1):
         self.valor_aposta = valor_aposta
@@ -59,7 +60,10 @@ class ChromeAuto():
             { 'adversario' : 'Polônia', 'time': 'Argentina', 'hora': '01:26'}, \
             { 'adversario' : 'Marrocos', 'time': 'Canadá', 'hora': '01:35'}, \
             { 'adversario' : 'Japão', 'time': 'Espanha', 'hora' : '01:38' }, \
+            { 'adversario' : 'Gana', 'time': 'Uruguai', 'hora' : '01:47' }, \
             { 'adversario' : 'Suiça', 'time': 'Sérvia', 'hora' : '01:53' }, \
+            { 'adversario' : 'Equador', 'time': 'Catar', 'hora' : '01:56' }, \
+            { 'adversario' : 'Equador', 'time': 'Catar', 'hora' : '01:59' }, \
             { 'adversario' : 'Holanda', 'time': 'Senegal', 'hora' : '02:05' }, \
             { 'adversario' : 'Polônia', 'time': 'México', 'hora' : '02:17' }, \
             { 'adversario' : 'Marrocos', 'time': 'Croácia', 'hora' : '02:23' },
@@ -69,7 +73,10 @@ class ChromeAuto():
             { 'adversario' : 'Polônia', 'time': 'Argentina', 'hora': '02:53'}, \
             { 'adversario' : 'Marrocos', 'time': 'Canadá', 'hora': '03:02'}, \
             { 'adversario' : 'Japão', 'time': 'Espanha', 'hora' : '03:05' }, \
+            { 'adversario' : 'Gana', 'time': 'Uruguai', 'hora' : '03:14' }, \
             { 'adversario' : 'Suiça', 'time': 'Sérvia', 'hora' : '03:20' }, \
+            { 'adversario' : 'Equador', 'time': 'Catar', 'hora' : '03:23' }, \
+            { 'adversario' : 'Equador', 'time': 'Catar', 'hora' : '03:26' }, \
             { 'adversario' : 'Holanda', 'time': 'Senegal', 'hora' : '03:32' }, \
             { 'adversario' : 'Polônia', 'time': 'México', 'hora' : '03:44' }, \
             { 'adversario' : 'Marrocos', 'time': 'Croácia', 'hora' : '03:50' },
@@ -84,7 +91,10 @@ class ChromeAuto():
             { 'adversario' : 'Polônia', 'time': 'Argentina', 'hora': '05:20'}, \
             { 'adversario' : 'Marrocos', 'time': 'Canadá', 'hora': '05:29'}, \
             { 'adversario' : 'Japão', 'time': 'Espanha', 'hora' : '05:32' }, \
+            { 'adversario' : 'Gana', 'time': 'Uruguai', 'hora' : '05:41' }, \
             { 'adversario' : 'Suiça', 'time': 'Sérvia', 'hora' : '05:47' }, \
+            { 'adversario' : 'Equador', 'time': 'Catar', 'hora' : '05:50' }, \
+            { 'adversario' : 'Equador', 'time': 'Catar', 'hora' : '05:53' }, \
             { 'adversario' : 'Holanda', 'time': 'Senegal', 'hora' : '05:59' }, \
             { 'adversario' : 'Polônia', 'time': 'México', 'hora' : '06:11' }, \
             { 'adversario' : 'Marrocos', 'time': 'Croácia', 'hora' : '06:17' },
@@ -99,7 +109,10 @@ class ChromeAuto():
             { 'adversario' : 'Polônia', 'time': 'Argentina', 'hora': '07:47'}, \
             { 'adversario' : 'Marrocos', 'time': 'Canadá', 'hora': '07:56'}, \
             { 'adversario' : 'Japão', 'time': 'Espanha', 'hora' : '07:59' }, \
+            { 'adversario' : 'Gana', 'time': 'Uruguai', 'hora' : '08:08' }, \
             { 'adversario' : 'Suiça', 'time': 'Sérvia', 'hora' : '08:14' }, \
+            { 'adversario' : 'Equador', 'time': 'Catar', 'hora' : '08:17' }, \
+            { 'adversario' : 'Equador', 'time': 'Catar', 'hora' : '08:20' }, \
             { 'adversario' : 'Holanda', 'time': 'Senegal', 'hora' : '08:26' }, \
             { 'adversario' : 'Polônia', 'time': 'México', 'hora' : '08:38' }, \
             { 'adversario' : 'Marrocos', 'time': 'Croácia', 'hora' : '08:44' },
@@ -114,7 +127,10 @@ class ChromeAuto():
             { 'adversario' : 'Polônia', 'time': 'Argentina', 'hora': '10:14'}, \
             { 'adversario' : 'Marrocos', 'time': 'Canadá', 'hora': '10:23'}, \
             { 'adversario' : 'Japão', 'time': 'Espanha', 'hora' : '10:26' }, \
+            { 'adversario' : 'Gana', 'time': 'Uruguai', 'hora' : '10:35' }, \
             { 'adversario' : 'Suiça', 'time': 'Sérvia', 'hora' : '10:41' }, \
+            { 'adversario' : 'Equador', 'time': 'Catar', 'hora' : '10:44' }, \
+            { 'adversario' : 'Equador', 'time': 'Catar', 'hora' : '10:47' }, \
             { 'adversario' : 'Holanda', 'time': 'Senegal', 'hora' : '10:53' }, \
             { 'adversario' : 'Polônia', 'time': 'México', 'hora' : '11:05' }, \
             { 'adversario' : 'Marrocos', 'time': 'Croácia', 'hora' : '11:11' },
@@ -129,7 +145,10 @@ class ChromeAuto():
             { 'adversario' : 'Polônia', 'time': 'Argentina', 'hora': '12:41'}, \
             { 'adversario' : 'Marrocos', 'time': 'Canadá', 'hora': '12:50'}, \
             { 'adversario' : 'Japão', 'time': 'Espanha', 'hora' : '12:53' }, \
+            { 'adversario' : 'Gana', 'time': 'Uruguai', 'hora' : '13:02' }, \
             { 'adversario' : 'Suiça', 'time': 'Sérvia', 'hora' : '13:08' }, \
+            { 'adversario' : 'Equador', 'time': 'Catar', 'hora' : '13:11' }, \
+            { 'adversario' : 'Equador', 'time': 'Catar', 'hora' : '13:14' }, \
             { 'adversario' : 'Holanda', 'time': 'Senegal', 'hora' : '13:20' }, \
             { 'adversario' : 'Polônia', 'time': 'México', 'hora' : '13:32' }, \
             { 'adversario' : 'Marrocos', 'time': 'Croácia', 'hora' : '13:38' },
@@ -144,7 +163,10 @@ class ChromeAuto():
             { 'adversario' : 'Polônia', 'time': 'Argentina', 'hora': '15:08'}, \
             { 'adversario' : 'Marrocos', 'time': 'Canadá', 'hora': '15:17'}, \
             { 'adversario' : 'Japão', 'time': 'Espanha', 'hora' : '15:20' }, \
+            { 'adversario' : 'Gana', 'time': 'Uruguai', 'hora' : '15:29' }, \
             { 'adversario' : 'Suiça', 'time': 'Sérvia', 'hora' : '15:35' }, \
+            { 'adversario' : 'Equador', 'time': 'Catar', 'hora' : '15:38' }, \
+            { 'adversario' : 'Equador', 'time': 'Catar', 'hora' : '15:41' }, \
             { 'adversario' : 'Holanda', 'time': 'Senegal', 'hora' : '15:47' }, \
             { 'adversario' : 'Polônia', 'time': 'México', 'hora' : '15:59' }, \
             { 'adversario' : 'Marrocos', 'time': 'Croácia', 'hora' : '16:05' },
@@ -159,7 +181,10 @@ class ChromeAuto():
             { 'adversario' : 'Polônia', 'time': 'Argentina', 'hora': '17:35'}, \
             { 'adversario' : 'Marrocos', 'time': 'Canadá', 'hora': '17:44'}, \
             { 'adversario' : 'Japão', 'time': 'Espanha', 'hora' : '17:47' }, \
+            { 'adversario' : 'Gana', 'time': 'Uruguai', 'hora' : '17:56' }, \
             { 'adversario' : 'Suiça', 'time': 'Sérvia', 'hora' : '18:02' }, \
+            { 'adversario' : 'Equador', 'time': 'Catar', 'hora' : '18:05' }, \
+            { 'adversario' : 'Equador', 'time': 'Catar', 'hora' : '18:08' }, \
             { 'adversario' : 'Holanda', 'time': 'Senegal', 'hora' : '18:14' }, \
             { 'adversario' : 'Polônia', 'time': 'México', 'hora' : '18:26' }, \
             { 'adversario' : 'Marrocos', 'time': 'Croácia', 'hora' : '18:32' },
@@ -174,9 +199,13 @@ class ChromeAuto():
             { 'adversario' : 'Polônia', 'time': 'Argentina', 'hora': '20:02'}, \
             { 'adversario' : 'Marrocos', 'time': 'Canadá', 'hora': '20:11'}, \
             { 'adversario' : 'Japão', 'time': 'Espanha', 'hora' : '20:14' }, \
+            { 'adversario' : 'Gana', 'time': 'Uruguai', 'hora' : '20:23' }, \
             { 'adversario' : 'Suiça', 'time': 'Sérvia', 'hora' : '20:29' }, \
+            { 'adversario' : 'Equador', 'time': 'Catar', 'hora' : '20:32' }, \
+            { 'adversario' : 'Equador', 'time': 'Catar', 'hora' : '20:35' }, \
             { 'adversario' : 'Holanda', 'time': 'Senegal', 'hora' : '20:41' }, \
             { 'adversario' : 'Polônia', 'time': 'México', 'hora' : '20:53' }, \
+            { 'adversario' : 'Equador', 'time': 'Catar', 'hora' : '21:05' }, \
             { 'adversario' : 'Holanda', 'time': 'Senegal', 'hora' : '21:11' }, \
             { 'adversario' : 'Polônia', 'time': 'México', 'hora' : '21:23' }, \
             { 'adversario' : 'Marrocos', 'time': 'Croácia', 'hora' : '21:29' },
@@ -190,7 +219,10 @@ class ChromeAuto():
             { 'adversario' : 'Polônia', 'time': 'Argentina', 'hora': '22:59'}, \
             { 'adversario' : 'Marrocos', 'time': 'Canadá', 'hora': '23:08'}, \
             { 'adversario' : 'Japão', 'time': 'Espanha', 'hora' : '23:11' }, \
+            { 'adversario' : 'Gana', 'time': 'Uruguai', 'hora' : '23:20' }, \
             { 'adversario' : 'Suiça', 'time': 'Sérvia', 'hora' : '23:26' }, \
+            { 'adversario' : 'Equador', 'time': 'Catar', 'hora' : '23:29' }, \
+            { 'adversario' : 'Equador', 'time': 'Catar', 'hora' : '23:32' }, \
             { 'adversario' : 'Holanda', 'time': 'Senegal', 'hora' : '23:38' }, \
             { 'adversario' : 'Polônia', 'time': 'México', 'hora' : '23:50' },
             { 'adversario' : 'Marrocos', 'time': 'Croácia', 'hora' : '23:56' },]
@@ -314,12 +346,7 @@ class ChromeAuto():
                     self.telegram_bot.envia_mensagem("SISTEMA TRAVADO NO CLICA HORÁRIO JOGO.")
                     self.hora_jogo = input("INSIRA O HORÁRIO ATUALIZADO DO PRÓXIMO JOGO")
             print(e)
-            print('Algo saiu errado no clica_horario_jogo')  
-
-        print(f'PERDA ACUMULADA: {self.perda_acumulada:.2f} R$')
-        print(f'VALOR DA APOSTA: {self.valor_aposta:.2f} R$')                    
-        print(f'GANHO POTENCIAL: {(self.valor_aposta * 2):.2f} R$')
-        print(f'GANHO POTENCIAL REAL: {(self.valor_aposta * 2 - self.valor_aposta):.2f} R$')                                      
+            print('Algo saiu errado no clica_horario_jogo')                                      
 
         self.analisa_odds()
 
@@ -401,11 +428,15 @@ class ChromeAuto():
             if self.valor_aposta < 2.0:
                 self.valor_aposta = 2.0
 
+            print(f'PERDA ACUMULADA: {self.perda_acumulada:.2f} R$')
+            print(f'VALOR DA APOSTA: {self.valor_aposta:.2f} R$')                    
+            print(f'GANHO POTENCIAL: {(self.valor_aposta * 2):.2f} R$')
+            print(f'GANHO POTENCIAL REAL: {(self.valor_aposta * 2 - self.valor_aposta):.2f} R$')  
+
             self.insere_valor( f'{self.valor_aposta:.2f}')
         except Exception as e:
             print("APOSTA JÁ FECHADA...")
             print('Algo saiu errado no analisa_odds')
-            self.chrome.quit()
             print(e)
 
     def le_saldo(self):
@@ -557,8 +588,6 @@ class ChromeAuto():
             else:
                 print('META NÃO ATINGIDA. KEEP GOING.')
             self.controle_frequencia_mensagens += 1
-
-            self.chrome.quit()
 
         except Exception as e:
             print(e)
