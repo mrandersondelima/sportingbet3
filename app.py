@@ -430,8 +430,8 @@ class ChromeAuto():
 
             print(f'PERDA ACUMULADA: {self.perda_acumulada:.2f} R$')
             print(f'VALOR DA APOSTA: {self.valor_aposta:.2f} R$')                    
-            print(f'GANHO POTENCIAL: {(self.valor_aposta * 2):.2f} R$')
-            print(f'GANHO POTENCIAL REAL: {(self.valor_aposta * 2 - self.valor_aposta):.2f} R$')  
+            print(f'GANHO POTENCIAL: {(self.valor_aposta * odd_jogo):.2f} R$')
+            print(f'GANHO POTENCIAL REAL: {(self.valor_aposta * odd_jogo - self.valor_aposta):.2f} R$')  
 
             self.insere_valor( f'{self.valor_aposta:.2f}')
         except Exception as e:
