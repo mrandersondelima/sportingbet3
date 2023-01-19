@@ -382,7 +382,7 @@ class ChromeAuto():
                 numero_apostas_abertas = numero_apostas_abertas['summary']['openBetsCount']
 
                 if numero_apostas_abertas > 0:
-                    self.telegram_bot.envia_mensagem(f'APOSTA FEITA PARA JOGO DAS {self.hora_jogo}')
+                    self.telegram_bot.envia_mensagem(f'SEQUÊNCIA DE PERDAS: {self.perdidas_em_sequencia}\nAPOSTA FEITA PARA JOGO DAS {self.hora_jogo}')
                     self.espera_resultado_jogo()
                     break
 
