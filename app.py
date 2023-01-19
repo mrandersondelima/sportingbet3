@@ -16,7 +16,7 @@ import sys
 
 hora_jogo_atual = None
 
-# & C:/Python39/python.exe c:/Users/anderson.morais/Documents/dev/sportingbet3/app.py 2 5 4 100 1 20 1 2
+# & C:/Python39/python.exe c:/Users/anderson.morais/Documents/dev/sportingbet3/app.py 2 5 2 600 1 20 1 2
 class ChromeAuto():
     def __init__(self, meta=0, tipo_valor=1, valor_aposta=None, tipo_meta=None, estilo_jogo=None, usa_perda_acumulada=False, numero_jogos_martingale=0, aposta_no_favorito=1):
         self.valor_aposta = valor_aposta
@@ -321,34 +321,36 @@ class ChromeAuto():
     def clica_horario_jogo(self, horario_jogo):
         print('Entrou no clica_horario_jogo')
         contador_de_trava = 0
+        clicou_no_horario = False
 
         self.estilo_rodada = self.estilo_jogo
 
-        print('horario jogo', horario_jogo)
+        while not clicou_no_horario:
+            try: 
+                horario = WebDriverWait(self.chrome, 5).until(
+                        EC.element_to_be_clickable((By.XPATH, horario_jogo)))      
+                horario.click()
+                sleep(2)
+                horario.click()
+                sleep(2)
+                clicou_no_horario = True
+            except Exception as e:
+                contador_de_trava += 1
+                if contador_de_trava > 5:
+                    #vou tentar clicar pra fechar o modal que apareceu
+                    try:
+                        modal = WebDriverWait(self.chrome, 5).until(
+                            EC.element_to_be_clickable((By.XPATH, '/html/body/vn-app/vn-dynamic-layout-multi-slot[2]/lh-rtms-layer/div/div/div/div/lh-rtms-layer-custom-overlay/div/lh-header-bar/vn-header-bar/div/div/div[3]/span/ancestor::div' ) )) 
+                        modal.click()
+                    except Exception as e:
+                        # se ainda assim car na exceptino eu envio a mensagem    
+                        self.telegram_bot.envia_mensagem("SISTEMA TRAVADO NO CLICA HORÁRIO JOGO.")
+                        self.hora_jogo = input("INSIRA O HORÁRIO ATUALIZADO DO PRÓXIMO JOGO")
+                print(e)
+                print('Algo saiu errado no clica_horario_jogo')  
+                sleep(10)                                    
 
-        try: 
-            horario = WebDriverWait(self.chrome, 5).until(
-                    EC.element_to_be_clickable((By.XPATH, horario_jogo)))      
-            horario.click()
-            sleep(2)
-            horario.click()
-            sleep(2)
-        except Exception as e:
-            contador_de_trava += 1
-            if contador_de_trava > 5:
-                #vou tentar clilcar pra fechar o modal qeu apareceu
-                try:
-                    modal = aposta_horario = WebDriverWait(self.chrome, 5).until(
-                        EC.element_to_be_clickable((By.XPATH, '/html/body/vn-app/vn-dynamic-layout-multi-slot[2]/lh-rtms-layer/div/div/div/div/lh-rtms-layer-custom-overlay/div/lh-header-bar/vn-header-bar/div/div/div[3]/span/ancestor::div' ) )) 
-                    modal.click()
-                except Exception as e:
-                    # se ainda assim car na exceptino eu envio a mensagem    
-                    self.telegram_bot.envia_mensagem("SISTEMA TRAVADO NO CLICA HORÁRIO JOGO.")
-                    self.hora_jogo = input("INSIRA O HORÁRIO ATUALIZADO DO PRÓXIMO JOGO")
-            print(e)
-            print('Algo saiu errado no clica_horario_jogo')                                      
-
-        self.analisa_odds()
+            self.analisa_odds()
 
     def insere_valor(self, valor):
         print('Entrou no insere_valor')
@@ -436,6 +438,7 @@ class ChromeAuto():
             self.insere_valor( f'{self.valor_aposta:.2f}')
         except Exception as e:
             print("APOSTA JÁ FECHADA...")
+            self.telegram_bot.envia_mensagem('NÃO FOI POSSÍVEL REALIZAR APOSTA.')
             print('Algo saiu errado no analisa_odds')
             print(e)
 
@@ -448,6 +451,7 @@ class ChromeAuto():
                 saldo_request = self.chrome.execute_script(f'let d = await fetch("https://sports.sportingbet.com/pt-br/api/balance/refresh"); return await d.json();')
                 self.saldo = saldo_request['vnBalance']['accountBalance']
                 leu_saldo = True
+                sleep(10)
             except Exception as e:
                 print(e)
                 contador_de_trava += 1
@@ -657,6 +661,7 @@ if __name__ == '__main__':
         hora_do_jogo = datetime( now.year, now.month, now.day, hora, minuto, 0)
 
         print(f'ESPERANDO JOGO DAS {chrome.hora_jogo}')
+        chrome.telegram_bot.envia_mensagem(f'ESPERANDO JOGO DAS {chrome.hora_jogo}')
         pause.until( hora_do_jogo - timedelta(minutes=3)  )
 
         chrome.clica_horario_jogo(f"//*[normalize-space(text()) = '{ hora_jogo_atual }']")
