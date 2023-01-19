@@ -12,6 +12,7 @@ class TipoMeta():
     VALOR_ABSOLUTO = 2
     SALDO_MAIS_META = 3
     SALDO_MAIS_VALOR = 4
+    NUMERO_VITORIAS = 5
 
 class EstiloJogo(): 
     FAVORITO_COM_ODD_MAIOR_IGUAL_2 = 1

@@ -49,6 +49,7 @@ class ChromeAuto():
         self.numero_jogos_martingale = numero_jogos_martingale
         self.aposta_no_favorito = aposta_no_favorito
         self.primeira_execucao = True
+        self.numero_vitorias = 0
         self.lista_horarios = [ { 'adversario' : 'Catar', 'time': 'Senegal', 'hora': '00:23' }, \
             { 'adversario' : 'Austrália - Austrália', 'time': 'Tunísia', 'hora': '00:32'}, \
             { 'adversario' : 'Alemanha', 'time': 'Espanha', 'hora': '00:53'}, \
@@ -295,25 +296,15 @@ class ChromeAuto():
 
     def atualiza_meta_e_valor_aposta(self):
         ''' tanto a meta quanto o valor são percentuais '''
-        if self.tipo_meta == TipoMeta.PORCENTAGEM and self.tipo_valor == TipoValorAposta.PORCENTAGEM:
-            self.valor_aposta = self.saldo * ( self.valor_aposta_inicial / 100 )
+        if self.tipo_meta == TipoMeta.PORCENTAGEM:
             self.meta = self.saldo + self.saldo * ( self.meta_inicial / 100 )
-        elif self.tipo_meta == TipoMeta.VALOR_ABSOLUTO and self.tipo_valor == TipoValorAposta.PORCENTAGEM:
-            ''' meta é absoluta e valor é percentual '''
-            self.valor_aposta = self.saldo * ( self.valor_aposta_inicial / 100 )
-            ''' meta é percentual e valor é absoluto '''
-        elif self.tipo_meta == TipoMeta.PORCENTAGEM and self.tipo_valor == TipoValorAposta.VALOR_ABSOLUTO:
-            self.meta = self.saldo + self.saldo * ( self.meta_inicial / 100 )
-        elif self.tipo_meta == TipoMeta.SALDO_MAIS_META and self.tipo_valor == TipoValorAposta.PORCENTAGEM:
-            self.meta = self.saldo + self.valor_aposta
-            self.valor_aposta = self.saldo * ( self.valor_aposta_inicial / 100 )
-        elif self.tipo_meta == TipoMeta.SALDO_MAIS_META and self.tipo_valor == TipoValorAposta.VALOR_ABSOLUTO:
-            self.meta = self.saldo + self.valor_aposta   
-        elif self.tipo_meta == TipoMeta.SALDO_MAIS_VALOR and self.tipo_valor == TipoValorAposta.PORCENTAGEM:       
-            self.valor_aposta = self.saldo * ( self.valor_aposta_inicial / 100 )
-            self.meta = self.saldo + self.meta
-        elif self.tipo_meta == TipoMeta.SALDO_MAIS_VALOR and self.tipo_valor == TipoValorAposta.VALOR_ABSOLUTO:
-            self.meta = self.saldo + self.meta
+        elif self.tipo_meta == TipoMeta.SALDO_MAIS_META:
+            self.meta = self.saldo_inicial + self.meta_inicial
+        elif self.tipo_meta == TipoMeta.SALDO_MAIS_VALOR:
+            self.meta = self.saldo_inicial + self.meta_inicial
+
+        if self.tipo_valor == TipoValorAposta.PORCENTAGEM:
+            self.valor_aposta = self.saldo * ( self.valor_aposta_inicial / 100 )           
 
         if self.valor_aposta < 2.0:
             self.valor_aposta = 2.0
@@ -545,6 +536,7 @@ class ChromeAuto():
                         self.telegram_bot.envia_mensagem(f'SISTEMA POSSIVELMENTE TRAVADO AO ATUALIZAR SALDO!!!')
                 print('GANHOU.')
                 self.perdidas_em_sequencia = 0
+                self.numero_vitorias += 1
             else:
                 self.perdidas_em_sequencia += 1
                 if self.maior_perdidas_em_sequencia < self.perdidas_em_sequencia:
@@ -568,7 +560,6 @@ class ChromeAuto():
             if self.saldo_inicial < self.saldo:
                 self.saldo_inicial = self.saldo
                 self.telegram_bot.envia_mensagem(f'GANHOU! SALDO: R$ {self.saldo}')
-                self.atualiza_meta_e_valor_aposta()
 
             if self.usa_perda_acumulada:
                 if self.perdidas_em_sequencia == self.numero_jogos_martingale:
@@ -577,21 +568,36 @@ class ChromeAuto():
             else:
                 self.perda_acumulada = 0.0
 
-            if self.saldo >= self.meta - 0.5:
-                print('PARABÉNS! VOCÊ ATINGIU SUA META!')
-                self.telegram_bot.envia_mensagem(f'PARABÉNS! VOCÊ ATINGIU SUA META! SEU SALDO É: R$ {self.saldo}\nMAIOR SEQUÊNCIA DE PERDAS: {self.maior_perdidas_em_sequencia}')
-                print(f'MAIOR SEQUÊNCIA DE PERDAS: {self.maior_perdidas_em_sequencia}')
-                if ao_atingir_meta == AoAtingirMeta.FECHAR_APLICATIVO:
-                    self.chrome.quit()
-                    exit(0)
-                elif ao_atingir_meta == AoAtingirMeta.DESLIGAR_COMPUTADOR:
-                    return os.system("shutdown /s /t 1")
-                elif ao_atingir_meta == AoAtingirMeta.CONTINUAR_APOSTANDO:
-                    #self.atualiza_meta_e_valor_aposta()
-                    self.maior_perdidas_em_sequencia = 0
-            else:
-                print('META NÃO ATINGIDA. KEEP GOING.')
-            self.controle_frequencia_mensagens += 1
+            if self.tipo_meta == TipoMeta.NUMERO_VITORIAS:
+                if self.numero_vitorias == self.meta:
+                    print('PARABÉNS! VOCÊ ATINGIU SUA META!')
+                    self.telegram_bot.envia_mensagem(f'PARABÉNS! VOCÊ ATINGIU SUA META! SEU SALDO É: R$ {self.saldo}\nMAIOR SEQUÊNCIA DE PERDAS: {self.maior_perdidas_em_sequencia}')
+                    print(f'MAIOR SEQUÊNCIA DE PERDAS: {self.maior_perdidas_em_sequencia}')
+                    if ao_atingir_meta == AoAtingirMeta.FECHAR_APLICATIVO:
+                        self.chrome.quit()
+                        exit(0)
+                    elif ao_atingir_meta == AoAtingirMeta.DESLIGAR_COMPUTADOR:
+                        return os.system("shutdown /s /t 1")
+                    elif ao_atingir_meta == AoAtingirMeta.CONTINUAR_APOSTANDO:
+                        self.maior_perdidas_em_sequencia = 0
+                else:
+                    print('META NÃO ATINGIDA. KEEP GOING.')
+            else: 
+                if self.saldo >= self.meta - 0.5:
+                    print('PARABÉNS! VOCÊ ATINGIU SUA META!')
+                    self.telegram_bot.envia_mensagem(f'PARABÉNS! VOCÊ ATINGIU SUA META! SEU SALDO É: R$ {self.saldo}\nMAIOR SEQUÊNCIA DE PERDAS: {self.maior_perdidas_em_sequencia}')
+                    print(f'MAIOR SEQUÊNCIA DE PERDAS: {self.maior_perdidas_em_sequencia}')
+                    if ao_atingir_meta == AoAtingirMeta.FECHAR_APLICATIVO:
+                        self.chrome.quit()
+                        exit(0)
+                    elif ao_atingir_meta == AoAtingirMeta.DESLIGAR_COMPUTADOR:
+                        return os.system("shutdown /s /t 1")
+                    elif ao_atingir_meta == AoAtingirMeta.CONTINUAR_APOSTANDO:
+                        #self.atualiza_meta_e_valor_aposta()
+                        self.maior_perdidas_em_sequencia = 0
+                    else:
+                        print('META NÃO ATINGIDA. KEEP GOING.')
+                    self.controle_frequencia_mensagens += 1
 
         except Exception as e:
             print(e)
@@ -609,7 +615,7 @@ if __name__ == '__main__':
     valor_aposta = float(sys.argv[2]) if len(sys.argv) > 2 else float(input())
     
     print('COMO QUER ESTABELECER A META?')
-    print('(1) PORCENTAGEM DO SALDO (2) VALOR ABSOLUTO (3) SALDO ATUAL MAIS META (4) SALDO ATUAL MAIS VALOR')
+    print('(1) PORCENTAGEM DO SALDO (2) VALOR ABSOLUTO (3) SALDO ATUAL MAIS META (4) SALDO ATUAL MAIS VALOR (5) NÚMERO DE VITÓRIAS')
 
     tipo_meta = int(sys.argv[3]) if len(sys.argv) > 3 else int(input())
     print('INSIRA O VALOR DA META')
