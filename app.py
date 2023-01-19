@@ -49,6 +49,7 @@ class ChromeAuto():
         self.numero_jogos_martingale = numero_jogos_martingale
         self.aposta_no_favorito = aposta_no_favorito
         self.primeira_execucao = True
+        self.contador_trava_clica_horario_jogo = 0
         self.numero_vitorias = 0
         self.lista_horarios = [ { 'adversario' : 'Catar', 'time': 'Senegal', 'hora': '00:23' }, \
             { 'adversario' : 'Austrália - Austrália', 'time': 'Tunísia', 'hora': '00:32'}, \
@@ -311,37 +312,36 @@ class ChromeAuto():
 
     def clica_horario_jogo(self, horario_jogo):
         print('Entrou no clica_horario_jogo')
-        contador_de_trava = 0
-        clicou_no_horario = False
-
+        self.contador_trava_clica_horario_jogo = 0
+        self.aposta_fechada = False
         self.estilo_rodada = self.estilo_jogo
+        try: 
+            horario = WebDriverWait(self.chrome, 5).until(
+                    EC.element_to_be_clickable((By.XPATH, horario_jogo)))      
+            horario.click()
+            sleep(2)
+            horario.click()
+            sleep(2)
+        except Exception as e:
+            self.contador_trava_clica_horario_jogo += 1
+            if self.contador_trava_clica_horario_jogo > 5:
+                #vou tentar clicar pra fechar o modal que apareceu
+                try:
+                    modal = WebDriverWait(self.chrome, 5).until(
+                        EC.element_to_be_clickable((By.XPATH, '/html/body/vn-app/vn-dynamic-layout-multi-slot[2]/lh-rtms-layer/div/div/div/div/lh-rtms-layer-custom-overlay/div/lh-header-bar/vn-header-bar/div/div/div[3]/span/ancestor::div' ) )) 
+                    modal.click()
+                except Exception as e:
+                    # se ainda assim car na exceptino eu envio a mensagem    
+                    self.telegram_bot.envia_mensagem("SISTEMA TRAVADO NO CLICA HORÁRIO JOGO.")
+                    self.contador_trava_clica_horario_jogo = 0
+                    self.hora_jogo = input("INSIRA O HORÁRIO ATUALIZADO DO PRÓXIMO JOGO:")
+            print(e)
+            self.aposta_fechada = True
+            self.telegram_bot.envia_mensagem("NÃO FOI POSSÍVEL REALIZAR APOSTA.")
+            print('Algo saiu errado no clica_horario_jogo')  
+            sleep(10)                                    
 
-        while not clicou_no_horario:
-            try: 
-                horario = WebDriverWait(self.chrome, 5).until(
-                        EC.element_to_be_clickable((By.XPATH, horario_jogo)))      
-                horario.click()
-                sleep(2)
-                horario.click()
-                sleep(2)
-                clicou_no_horario = True
-            except Exception as e:
-                contador_de_trava += 1
-                if contador_de_trava > 5:
-                    #vou tentar clicar pra fechar o modal que apareceu
-                    try:
-                        modal = WebDriverWait(self.chrome, 5).until(
-                            EC.element_to_be_clickable((By.XPATH, '/html/body/vn-app/vn-dynamic-layout-multi-slot[2]/lh-rtms-layer/div/div/div/div/lh-rtms-layer-custom-overlay/div/lh-header-bar/vn-header-bar/div/div/div[3]/span/ancestor::div' ) )) 
-                        modal.click()
-                    except Exception as e:
-                        # se ainda assim car na exceptino eu envio a mensagem    
-                        self.telegram_bot.envia_mensagem("SISTEMA TRAVADO NO CLICA HORÁRIO JOGO.")
-                        self.hora_jogo = input("INSIRA O HORÁRIO ATUALIZADO DO PRÓXIMO JOGO")
-                print(e)
-                print('Algo saiu errado no clica_horario_jogo')  
-                sleep(10)                                    
-
-            self.analisa_odds()
+        self.analisa_odds()
 
     def insere_valor(self, valor):
         print('Entrou no insere_valor')
@@ -401,6 +401,8 @@ class ChromeAuto():
 
     def analisa_odds(self):
         print('Entrou no analisa_odds')
+        if self.aposta_fechada:
+            return
         try: 
             resultado_final = f"//*[normalize-space(text()) = '{self.nome_time}']/ancestor::ms-event-pick"
 
