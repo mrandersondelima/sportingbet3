@@ -8,7 +8,7 @@ import pause
 import json
 from datetime import datetime, timedelta
 from credenciais import usuario, senha
-from telegram_bot import TelegramBot
+from telegram_bot import TelegramBot, TelegramBotErro
 from random import randrange
 import os
 from utils import *
@@ -16,9 +16,9 @@ import sys
 
 hora_jogo_atual = None
 
-# & C:/Python39/python.exe c:/Users/anderson.morais/Documents/dev/sportingbet3/app.py 2 5 2 600 1 20 1 2
+# & C:/Python39/python.exe c:/Users/anderson.morais/Documents/dev/sportingbet3/app.py 2 5 4 50 1 20 1 2
 class ChromeAuto():
-    def __init__(self, meta=0, tipo_valor=1, valor_aposta=None, tipo_meta=None, estilo_jogo=None, usa_perda_acumulada=False, numero_jogos_martingale=0, aposta_no_favorito=1):
+    def __init__(self, meta=0, tipo_valor=1, valor_aposta=None, tipo_meta=None, estilo_jogo=None, usa_perda_acumulada=False, numero_jogos_martingale=0, aposta_no_favorito=1, perda_acumulada=0.0):
         self.valor_aposta = valor_aposta
         self.valor_aposta_inicial = valor_aposta
         self.usa_perda_acumulada = usa_perda_acumulada
@@ -33,9 +33,10 @@ class ChromeAuto():
         self.tipo_meta = tipo_meta
         self.aposta_fechada = False
         self.telegram_bot = TelegramBot()
-        self.perda_acumulada = 0.0
+        self.telegram_bot_erro = TelegramBotErro()
+        self.perda_acumulada = perda_acumulada
         self.controle_frequencia_mensagens = 0
-        self.jogos_realizados = dict()
+        self.jogos_realizados = 0
         self.hora_jogo = ''
         self.contador_perdas = 0
         self.perdidas_em_sequencia = 0
@@ -44,7 +45,7 @@ class ChromeAuto():
         self.x_path_clicavel = None
         self.jogos_atuais = []
         self.controla_jogo_acima_abaixo = 0
-        self.n_jogos_alesta_sistema_rodando = 14
+        self.n_jogos_alerta_sistema_rodando = 10
         self.nome_time = None
         self.numero_jogos_martingale = numero_jogos_martingale
         self.aposta_no_favorito = aposta_no_favorito
@@ -310,9 +311,7 @@ class ChromeAuto():
         if self.valor_aposta < 2.0:
             self.valor_aposta = 2.0
 
-    def clica_horario_jogo(self, horario_jogo):
-        print('Entrou no clica_horario_jogo')
-        self.contador_trava_clica_horario_jogo = 0
+    def clica_horario_jogo(self, horario_jogo):     
         self.aposta_fechada = False
         self.estilo_rodada = self.estilo_jogo
         try: 
@@ -322,7 +321,8 @@ class ChromeAuto():
             sleep(2)
             horario.click()
             sleep(2)
-        except Exception as e:
+            self.contador_trava_clica_horario_jogo = 0
+        except Exception:
             self.contador_trava_clica_horario_jogo += 1
             if self.contador_trava_clica_horario_jogo > 5:
                 #vou tentar clicar pra fechar o modal que apareceu
@@ -330,21 +330,88 @@ class ChromeAuto():
                     modal = WebDriverWait(self.chrome, 5).until(
                         EC.element_to_be_clickable((By.XPATH, '/html/body/vn-app/vn-dynamic-layout-multi-slot[2]/lh-rtms-layer/div/div/div/div/lh-rtms-layer-custom-overlay/div/lh-header-bar/vn-header-bar/div/div/div[3]/span/ancestor::div' ) )) 
                     modal.click()
-                except Exception as e:
-                    # se ainda assim car na exceptino eu envio a mensagem    
-                    self.telegram_bot.envia_mensagem("SISTEMA TRAVADO NO CLICA HORÁRIO JOGO.")
-                    self.contador_trava_clica_horario_jogo = 0
-                    self.hora_jogo = input("INSIRA O HORÁRIO ATUALIZADO DO PRÓXIMO JOGO:")
+                except Exception:
+                    try:
+                        modal = WebDriverWait(self.chrome, 5).until(
+                        EC.element_to_be_clickable((By.XPATH, '/html/body/vn-app/vn-dynamic-layout-multi-slot[2]/lh-rtms-layer/div/div/div/div/lh-rtms-layer-custom-overlay/div/lh-header-bar/vn-header-bar/div/div/div[3]' ) )) 
+                        modal.click() 
+                    except Exception:
+                        # se ainda assim car na exceptino eu envio a mensagem    
+                        self.telegram_bot_erro.envia_mensagem("SISTEMA TRAVADO NO CLICA HORÁRIO JOGO.")
+                        self.contador_trava_clica_horario_jogo = 0
+                        self.hora_jogo = input("INSIRA O HORÁRIO ATUALIZADO DO PRÓXIMO JOGO:")
+            self.aposta_fechada = True
+            sleep(10)                                              
+
+    def analisa_odds(self):
+        try: 
+            resultado_partida = WebDriverWait(self.chrome, 10).until(
+                EC.presence_of_element_located((By.XPATH, "//*[normalize-space(text()) = 'Resultado da partida']") )) 
+
+            odd_casa = WebDriverWait(self.chrome, 20).until(
+                EC.presence_of_element_located((By.XPATH, '/html/body/vn-app/vn-dynamic-layout-single-slot[4]/vn-main/main/div/ms-main/ng-scrollbar[1]/div/div/div/div/ms-main-column/div/ms-virtual-list/ms-virtual-fixture/div/ms-option-group-list/div[1]/ms-option-panel[1]/ms-regular-group/ms-regular-option-group/div/ms-option[1]/ms-event-pick/div/div[2]') )) 
+
+            odd_casa = odd_casa.get_property('innerText')
+            odd_empate = WebDriverWait(self.chrome, 20).until(
+                EC.presence_of_element_located((By.XPATH, '/html/body/vn-app/vn-dynamic-layout-single-slot[4]/vn-main/main/div/ms-main/ng-scrollbar[1]/div/div/div/div/ms-main-column/div/ms-virtual-list/ms-virtual-fixture/div/ms-option-group-list/div[1]/ms-option-panel[1]/ms-regular-group/ms-regular-option-group/div/ms-option[2]/ms-event-pick/div/div[2]') )) 
+
+            odd_empate = odd_empate.get_property('innerText')
+            odd_fora = WebDriverWait(self.chrome, 20).until(
+                EC.presence_of_element_located((By.XPATH, '/html/body/vn-app/vn-dynamic-layout-single-slot[4]/vn-main/main/div/ms-main/ng-scrollbar[1]/div/div/div/div/ms-main-column/div/ms-virtual-list/ms-virtual-fixture/div/ms-option-group-list/div[1]/ms-option-panel[1]/ms-regular-group/ms-regular-option-group/div/ms-option[3]/ms-event-pick/div/div[2]') )) 
+
+            odd_fora = odd_fora.get_property('innerText')
+
+            odd_casa = float(odd_casa)
+            odd_empate = float(odd_empate)
+            odd_fora = float(odd_fora)
+            odd_jogo = 0
+
+            if odd_casa >= 4 and odd_casa >= odd_fora:
+                odd_jogo = odd_casa
+                aposta_casa = WebDriverWait(self.chrome, 20).until(
+                    EC.element_to_be_clickable((By.XPATH, '/html/body/vn-app/vn-dynamic-layout-single-slot[4]/vn-main/main/div/ms-main/ng-scrollbar[1]/div/div/div/div/ms-main-column/div/ms-virtual-list/ms-virtual-fixture/div/ms-option-group-list/div[1]/ms-option-panel[1]/ms-regular-group/ms-regular-option-group/div/ms-option[1]' ) )) 
+                aposta_casa.click()
+            elif odd_fora >= 4 and odd_fora >= odd_casa:
+                aposta_fora = WebDriverWait(self.chrome, 20).until(
+                    EC.element_to_be_clickable((By.XPATH, '/html/body/vn-app/vn-dynamic-layout-single-slot[4]/vn-main/main/div/ms-main/ng-scrollbar[1]/div/div/div/div/ms-main-column/div/ms-virtual-list/ms-virtual-fixture/div/ms-option-group-list/div[1]/ms-option-panel[1]/ms-regular-group/ms-regular-option-group/div/ms-option[3]' ) )) 
+                aposta_fora.click()
+                odd_jogo = odd_fora
+            elif odd_casa == odd_fora and odd_casa >= 4:
+                odd_jogo = odd_casa
+                aposta_casa = WebDriverWait(self.chrome, 20).until(
+                    EC.element_to_be_clickable((By.XPATH, '/html/body/vn-app/vn-dynamic-layout-single-slot[4]/vn-main/main/div/ms-main/ng-scrollbar[1]/div/div/div/div/ms-main-column/div/ms-virtual-list/ms-virtual-fixture/div/ms-option-group-list/div[1]/ms-option-panel[1]/ms-regular-group/ms-regular-option-group/div/ms-option[1]' ) )) 
+                aposta_casa.click()
+
+            if odd_jogo != 0:
+                if self.tipo_valor == TipoValorAposta.PORCENTAGEM:
+                    self.valor_aposta = ( self.saldo_inicial * self.valor_aposta_inicial / 100 + self.perda_acumulada ) / ( odd_jogo - 1.00 )
+                elif self.tipo_valor == TipoValorAposta.VALOR_ABSOLUTO:
+                    self.valor_aposta = ( self.valor_aposta_inicial + self.perda_acumulada ) / ( odd_jogo - 1.00 )
+
+                if self.valor_aposta < 2.0:
+                    self.valor_aposta = 2.0
+
+                if self.valor_aposta > self.saldo:
+                    print('VALOR DA APOSTA É MAIOR DO QUE O SALDO.')
+                    self.telegram_bot_erro.envia_mensagem('VALOR DA APOSTA É MAIOR DO QUE O SALDO.')
+
+                    while self.valor_aposta > self.saldo:
+                        sleep(1800)
+                        self.le_saldo()
+                    self.aposta_fechada = True
+
+                print(f'PERDA ACUMULADA: {self.perda_acumulada:.2f} R$')
+                print(f'VALOR DA APOSTA: {self.valor_aposta:.2f} R$')                    
+                print(f'GANHO POTENCIAL: {(self.valor_aposta * odd_jogo):.2f} R$')
+                print(f'GANHO POTENCIAL REAL: {(self.valor_aposta * odd_jogo - self.valor_aposta):.2f} R$') 
+            else:
+                self.aposta_fechada = True
+        except Exception as e:
+            print("APOSTA JÁ FECHADA...")
             print(e)
             self.aposta_fechada = True
-            self.telegram_bot.envia_mensagem("NÃO FOI POSSÍVEL REALIZAR APOSTA.")
-            print('Algo saiu errado no clica_horario_jogo')  
-            sleep(10)                                    
 
-        self.analisa_odds()
-
-    def insere_valor(self, valor):
-        print('Entrou no insere_valor')
+    def insere_valor(self):
         contador_travamento = 0
         while True:         
             contador_travamento += 1
@@ -353,10 +420,9 @@ class ChromeAuto():
                         EC.presence_of_element_located((By.XPATH, '/html/body/vn-app/vn-dynamic-layout-single-slot[4]/vn-main/main/div/ms-main/ng-scrollbar[2]/div/div/div/div/ms-widget-column/ms-widget-slot/ms-bet-column/ms-betslip-component/div/div[2]/div/ms-betslip-stakebar/div/div/span/ms-stake/div/ms-stake-input/div/input') )) 
                 sleep(2)
                 input_valor.clear()
-                input_valor.send_keys(valor)
+                input_valor.send_keys(f'{self.valor_aposta:.2f}')
             except Exception as e:
                 print(e)
-                print('Algo saiu errado no insere_valor')
            
             sleep(2)
 
@@ -371,8 +437,6 @@ class ChromeAuto():
                         EC.element_to_be_clickable((By.XPATH, '/html/body/vn-app/vn-dynamic-layout-single-slot[4]/vn-main/main/div/ms-main/ng-scrollbar[2]/div/div/div/div/ms-widget-column/ms-widget-slot/ms-bet-column/ms-betslip-component/div/div/div/div/button' ) )) 
                 botao_fechar.click() 
 
-                sleep(2)
-
                 self.le_saldo()
 
                 print(f'SALDO ATUAL: {self.saldo}')
@@ -381,13 +445,16 @@ class ChromeAuto():
                 numero_apostas_abertas = self.chrome.execute_script(f'let d = await fetch("https://sports.sportingbet.com/pt-br/sports/api/mybets/betslips?index=1&maxItems=12&typeFilter=2"); return await d.json();')
                 numero_apostas_abertas = numero_apostas_abertas['summary']['openBetsCount']
 
+                print('NÚMERO DE APOSTAS ABERTAS: ', numero_apostas_abertas)
+
                 if numero_apostas_abertas > 0:
-                    self.telegram_bot.envia_mensagem(f'SEQUÊNCIA DE PERDAS: {self.perdidas_em_sequencia}\nAPOSTA FEITA PARA JOGO DAS {self.hora_jogo}')
-                    self.espera_resultado_jogo()
-                    break
+                    self.jogos_realizados += 1
+                    if self.jogos_realizados % self.n_jogos_alerta_sistema_rodando == 0:
+                        self.telegram_bot.envia_mensagem('SISTEMA AINDA RODANDO...')                    
+                    return
 
                 if contador_travamento == 10:
-                    self.telegram_bot.envia_mensagem(f'SISTEMA POSSIVELMENTE TRAVADO NO INSERE VALOR!!!')
+                    self.telegram_bot_erro.envia_mensagem(f'SISTEMA POSSIVELMENTE TRAVADO NO INSERE VALOR!!!')
 
             except Exception as e:
                 lixeira = WebDriverWait(self.chrome, 20).until(
@@ -397,49 +464,12 @@ class ChromeAuto():
                         EC.element_to_be_clickable((By.XPATH, '/html/body/vn-app/vn-dynamic-layout-single-slot[4]/vn-main/main/div/ms-main/ng-scrollbar[2]/div/div/div/div/ms-widget-column/ms-widget-slot/ms-bet-column/ms-betslip-component/div/div[1]/div[1]/ms-betslip-picks/div[2]/ms-betslip-remove-all-picks/div' ) )) 
                 confirmacao_exclusao.click()
                 print(e)
-                print('Algo saiu errado no insere_valor')
 
-    def analisa_odds(self):
-        print('Entrou no analisa_odds')
-        if self.aposta_fechada:
-            return
-        try: 
-            resultado_final = f"//*[normalize-space(text()) = '{self.nome_time}']/ancestor::ms-event-pick"
-
-            resultado_final_el = WebDriverWait(self.chrome, 20).until(
-                EC.element_to_be_clickable((By.XPATH, resultado_final) ))  
-
-            odd_jogo = WebDriverWait(self.chrome, 5).until(
-                    EC.presence_of_element_located((By.XPATH, f"//*[normalize-space(text()) = '{self.nome_time}']/following-sibling::div" ) )) 
-            resultado_final_el.click()
-            odd_jogo = float( odd_jogo.get_property('innerText').split(' ')[-1] )
-            print(odd_jogo)
-
-            if self.tipo_valor == TipoValorAposta.PORCENTAGEM:
-                self.valor_aposta = ( self.saldo_inicial * self.valor_aposta_inicial / 100 + self.perda_acumulada ) / ( odd_jogo - 1.00 )
-            elif self.tipo_valor == TipoValorAposta.VALOR_ABSOLUTO:
-                self.valor_aposta = ( self.valor_aposta_inicial + self.perda_acumulada ) / ( odd_jogo - 1.00 )
-
-            if self.valor_aposta < 2.0:
-                self.valor_aposta = 2.0
-
-            print(f'PERDA ACUMULADA: {self.perda_acumulada:.2f} R$')
-            print(f'VALOR DA APOSTA: {self.valor_aposta:.2f} R$')                    
-            print(f'GANHO POTENCIAL: {(self.valor_aposta * odd_jogo):.2f} R$')
-            print(f'GANHO POTENCIAL REAL: {(self.valor_aposta * odd_jogo - self.valor_aposta):.2f} R$')  
-
-            self.insere_valor( f'{self.valor_aposta:.2f}')
-        except Exception as e:
-            print("APOSTA JÁ FECHADA...")
-            self.telegram_bot.envia_mensagem('NÃO FOI POSSÍVEL REALIZAR APOSTA.')
-            print('Algo saiu errado no analisa_odds')
-            print(e)
-
-    def le_saldo(self):
-        sleep(5)
+    def le_saldo(self):        
         leu_saldo = False
         contador_de_trava = 0
         while not leu_saldo:
+            sleep(10)
             try:
                 saldo_request = self.chrome.execute_script(f'let d = await fetch("https://sports.sportingbet.com/pt-br/api/balance/refresh"); return await d.json();')
                 self.saldo = saldo_request['vnBalance']['accountBalance']
@@ -449,7 +479,8 @@ class ChromeAuto():
                 print(e)
                 contador_de_trava += 1
                 if contador_de_trava >= 10:
-                    self.telegram_bot.envia_mensagem('SISTEMA POSSIVELMENTE TRAVADO AO LER SALDO.')
+                    self.telegram_bot_erro.envia_mensagem('SISTEMA POSSIVELMENTE TRAVADO AO LER SALDO.')
+                    self.chrome.refresh()
                 print('Não foi possível ler saldo. Tentando de novo...')
     
     def seleciona_indice_jogo(self):
@@ -467,6 +498,33 @@ class ChromeAuto():
                 return indice
             else:
                 indice += 1
+
+    def define_hora_jogo(self, hora_jogo_atual):
+        hora = int(hora_jogo_atual.split(':')[0])
+        minuto = int(hora_jogo_atual.split(':')[1])
+        now = datetime.today()  
+        hora_do_jogo = datetime( now.year, now.month, now.day, hora, minuto, 0)
+        hora_jogo_atual_datetime = hora_do_jogo + timedelta(minutes=3)
+        hora_jogo_atual =  hora_jogo_atual_datetime.strftime("%H:%M")
+
+        if hora_jogo_atual == '20:56':
+            hora_jogo_atual = '21:05'
+            self.hora_jogo = '21:05'
+            return hora_jogo_atual
+
+        self.hora_jogo = hora_jogo_atual
+        return hora_jogo_atual
+
+    def espera_resultado_jogo_sem_aposta(self):
+        print('HORÁRIO', self.hora_jogo )
+        print('Esperando resultado da partida sem aposta...')
+
+        hora = int(self.hora_jogo.split(':')[0])
+        minuto = int(self.hora_jogo.split(':')[1])
+        now = datetime.today()  
+        hora_do_jogo = datetime( now.year, now.month, now.day, hora, minuto, 0)
+
+        pause.until( hora_do_jogo + timedelta(minutes=1, seconds=20)  )
     
     def espera_resultado_jogo(self):
         print('Entrou no espera_resultado_jogo')
@@ -495,7 +553,7 @@ class ChromeAuto():
                 numero_apostas_abertas = numero_apostas_abertas['summary']['openBetsCount']
                 contador_de_trava += 1
                 if contador_de_trava == 10:
-                    self.telegram_bot.envia_mensagem(f'SISTEMA POSSIVELMENTE TRAVADO AO ESPERAR RESULTADO DA APOSTA!!!')
+                    self.telegram_bot_erro.envia_mensagem(f'SISTEMA POSSIVELMENTE TRAVADO AO ESPERAR RESULTADO DA APOSTA!!!')
                 sleep(5)
 
             # agora verifico se o horário da partida é igual a self.hora_jogo
@@ -516,7 +574,7 @@ class ChromeAuto():
                 horario_ultima_aposta_texto = ( horario_ultima_aposta_texto - timedelta(hours=3) ).strftime("%H:%M")
                 contador_de_trava += 1
                 if contador_de_trava == 10:
-                    self.telegram_bot.envia_mensagem(f'SISTEMA POSSIVELMENTE TRAVADO AO ESPERAR RESULTADO DA PARTIDA!!!')
+                    self.telegram_bot_erro.envia_mensagem(f'SISTEMA POSSIVELMENTE TRAVADO AO ESPERAR RESULTADO DA PARTIDA!!!')
                 sleep(5)
             
             print('JÁ SAIU RESULTADO')
@@ -535,7 +593,7 @@ class ChromeAuto():
 
                     contador_de_trava += 1
                     if contador_de_trava == 10:
-                        self.telegram_bot.envia_mensagem(f'SISTEMA POSSIVELMENTE TRAVADO AO ATUALIZAR SALDO!!!')
+                        self.telegram_bot_erro.envia_mensagem(f'SISTEMA POSSIVELMENTE TRAVADO AO ATUALIZAR SALDO!!!')
                 print('GANHOU.')
                 self.perdidas_em_sequencia = 0
                 self.numero_vitorias += 1
@@ -561,7 +619,7 @@ class ChromeAuto():
                 
             if self.saldo_inicial < self.saldo:
                 self.saldo_inicial = self.saldo
-                self.telegram_bot.envia_mensagem(f'GANHOU! SALDO: R$ {self.saldo}')
+                self.telegram_bot_erro.envia_mensagem(f'GANHOU! SALDO: R$ {self.saldo}')
 
             if self.usa_perda_acumulada:
                 if self.perdidas_em_sequencia == self.numero_jogos_martingale:
@@ -573,7 +631,7 @@ class ChromeAuto():
             if self.tipo_meta == TipoMeta.NUMERO_VITORIAS:
                 if self.numero_vitorias == self.meta:
                     print('PARABÉNS! VOCÊ ATINGIU SUA META!')
-                    self.telegram_bot.envia_mensagem(f'PARABÉNS! VOCÊ ATINGIU SUA META! SEU SALDO É: R$ {self.saldo}\nMAIOR SEQUÊNCIA DE PERDAS: {self.maior_perdidas_em_sequencia}')
+                    self.telegram_bot_erro.envia_mensagem(f'PARABÉNS! VOCÊ ATINGIU SUA META! SEU SALDO É: R$ {self.saldo}\nMAIOR SEQUÊNCIA DE PERDAS: {self.maior_perdidas_em_sequencia}')
                     print(f'MAIOR SEQUÊNCIA DE PERDAS: {self.maior_perdidas_em_sequencia}')
                     if ao_atingir_meta == AoAtingirMeta.FECHAR_APLICATIVO:
                         self.chrome.quit()
@@ -587,7 +645,7 @@ class ChromeAuto():
             else: 
                 if self.saldo >= self.meta - 0.5:
                     print('PARABÉNS! VOCÊ ATINGIU SUA META!')
-                    self.telegram_bot.envia_mensagem(f'PARABÉNS! VOCÊ ATINGIU SUA META! SEU SALDO É: R$ {self.saldo}\nMAIOR SEQUÊNCIA DE PERDAS: {self.maior_perdidas_em_sequencia}')
+                    self.telegram_bot_erro.envia_mensagem(f'PARABÉNS! VOCÊ ATINGIU SUA META! SEU SALDO É: R$ {self.saldo}\nMAIOR SEQUÊNCIA DE PERDAS: {self.maior_perdidas_em_sequencia}')
                     print(f'MAIOR SEQUÊNCIA DE PERDAS: {self.maior_perdidas_em_sequencia}')
                     if ao_atingir_meta == AoAtingirMeta.FECHAR_APLICATIVO:
                         self.chrome.quit()
@@ -648,30 +706,29 @@ if __name__ == '__main__':
     else:
         aposta_no_favorito = False
 
-    chrome = ChromeAuto(meta=meta, tipo_valor=tipo_valor, valor_aposta=valor_aposta, tipo_meta=tipo_meta, usa_perda_acumulada=usa_perda_acumulada, numero_jogos_martingale=numero_jogos_martingale, aposta_no_favorito=aposta_no_favorito )
+    perda_acumulada = float(sys.argv[9]) if len(sys.argv) > 9 else int(input())
 
-    indice_jogo = chrome.seleciona_indice_jogo()
-    numero_jogos = len( chrome.lista_horarios)
+    chrome = ChromeAuto(meta=meta, tipo_valor=tipo_valor, valor_aposta=valor_aposta, tipo_meta=tipo_meta, usa_perda_acumulada=usa_perda_acumulada, numero_jogos_martingale=numero_jogos_martingale, aposta_no_favorito=aposta_no_favorito, perda_acumulada=perda_acumulada )
     chrome.acessa('https://www.sportingbet.com/pt-br/labelhost/login')        
     chrome.faz_login()  
 
+    horario_jogo = '/html/body/vn-app/vn-dynamic-layout-single-slot[4]/vn-main/main/div/ms-main/ng-scrollbar[1]/div/div/div/div/ms-main-column/div/ms-virtual-list/ms-virtual-fixture/div/ms-tab-bar/ms-scroll-adapter/div/div/ul/li[2]/a'
+
+    primeiro_horario = chrome.chrome.find_element(By.XPATH, horario_jogo + '/descendant::*')
+    hora_jogo_atual = primeiro_horario.get_property('innerText')
+    chrome.hora_jogo = hora_jogo_atual
+
     while True:
-        ## aqui o sistema vai pausar até que faltem 5 minutos pra a partida
-        hora_jogo_atual = chrome.lista_horarios[ indice_jogo % numero_jogos ].get('hora')
-        chrome.nome_time = chrome.lista_horarios[ indice_jogo %  numero_jogos].get('time') if chrome.aposta_no_favorito else chrome.lista_horarios[ indice_jogo %  numero_jogos].get('adversario')
-        chrome.hora_jogo = hora_jogo_atual
-        hora = int(hora_jogo_atual.split(':')[0])
-        minuto = int(hora_jogo_atual.split(':')[1])
-        if hora_jogo_atual == chrome.lista_horarios[0].get('hora'):
-            now = datetime.today() + timedelta(hours=3)
-        else:
-            now = datetime.today()  
-        hora_do_jogo = datetime( now.year, now.month, now.day, hora, minuto, 0)
-
-        print(f'ESPERANDO JOGO DAS {chrome.hora_jogo}')
-        chrome.telegram_bot.envia_mensagem(f'ESPERANDO JOGO DAS {chrome.hora_jogo}')
-        pause.until( hora_do_jogo - timedelta(minutes=3)  )
-
         chrome.clica_horario_jogo(f"//*[normalize-space(text()) = '{ hora_jogo_atual }']")
+        if not chrome.aposta_fechada:
+            chrome.analisa_odds()
+            if not chrome.aposta_fechada:
+                chrome.insere_valor()
+                chrome.espera_resultado_jogo()
+            else:
+                chrome.espera_resultado_jogo_sem_aposta()
+        else:
+            chrome.espera_resultado_jogo_sem_aposta()
 
-        indice_jogo += 1
+
+        hora_jogo_atual = chrome.define_hora_jogo(chrome.hora_jogo)
