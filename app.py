@@ -18,7 +18,7 @@ hora_jogo_atual = None
 
 # & C:/Python39/python.exe c:/Users/anderson.morais/Documents/dev/sportingbet3/app.py 2 5 4 50 1 20 1 2
 class ChromeAuto():
-    def __init__(self, meta=0, tipo_valor=1, valor_aposta=None, tipo_meta=None, estilo_jogo=None, usa_perda_acumulada=False, numero_jogos_martingale=0, aposta_no_favorito=1, perda_acumulada=0.0):
+    def __init__(self, meta=0, tipo_valor=1, valor_aposta=None, tipo_meta=None, estilo_jogo=None, usa_perda_acumulada=False, numero_jogos_martingale=0, aposta_no_favorito=1, perda_acumulada=0.0, apostar_ate='16:00'):
         self.valor_aposta = valor_aposta
         self.valor_aposta_inicial = valor_aposta
         self.usa_perda_acumulada = usa_perda_acumulada
@@ -45,13 +45,14 @@ class ChromeAuto():
         self.x_path_clicavel = None
         self.jogos_atuais = []
         self.controla_jogo_acima_abaixo = 0
-        self.n_jogos_alerta_sistema_rodando = 10
+        self.n_jogos_alerta_sistema_rodando = 7
         self.nome_time = None
         self.numero_jogos_martingale = numero_jogos_martingale
         self.aposta_no_favorito = aposta_no_favorito
         self.primeira_execucao = True
         self.contador_trava_clica_horario_jogo = 0
         self.numero_vitorias = 0
+        self.apostar_ate = apostar_ate
         self.lista_horarios = [ { 'adversario' : 'Catar', 'time': 'Senegal', 'hora': '00:23' }, \
             { 'adversario' : 'Austrália - Austrália', 'time': 'Tunísia', 'hora': '00:32'}, \
             { 'adversario' : 'Alemanha', 'time': 'Espanha', 'hora': '00:53'}, \
@@ -621,6 +622,18 @@ class ChromeAuto():
                 self.saldo_inicial = self.saldo
                 self.telegram_bot_erro.envia_mensagem(f'GANHOU! SALDO: R$ {self.saldo}')
 
+                if self.apostar_ate != '-1':
+                    hora_atual = datetime.today()
+
+                    h_limite = int(self.apostar_ate.split(':')[0])
+                    m_limite = int(self.apostar_ate.split(':')[1])
+                    hora_limite = datetime( hora_atual.year, hora_atual.month, hora_atual.day, h_limite, m_limite, 0)
+
+                    if hora_atual >= hora_atual:
+                        print('PARABÉNS! VOCÊ ATINGIU SUA META!')
+                        self.telegram_bot_erro.envia_mensagem(f'PARABÉNS! VOCÊ ATINGIU SUA META! SEU SALDO É: R$ {self.saldo}\nMAIOR SEQUÊNCIA DE PERDAS: {self.maior_perdidas_em_sequencia}')
+                        print(f'MAIOR SEQUÊNCIA DE PERDAS: {self.maior_perdidas_em_sequencia}')
+
             if self.usa_perda_acumulada:
                 if self.perdidas_em_sequencia == self.numero_jogos_martingale:
                     self.perda_acumulada = 0.0
@@ -706,9 +719,12 @@ if __name__ == '__main__':
     else:
         aposta_no_favorito = False
 
-    perda_acumulada = float(sys.argv[9]) if len(sys.argv) > 9 else int(input())
+    print('FECHAR PROGRAMA SE APOSTA VENCEDORA FOR APÓS O HORÁRIO: ')
+    apostar_ate = (sys.argv[9]) if len(sys.argv) > 9 else input()
 
-    chrome = ChromeAuto(meta=meta, tipo_valor=tipo_valor, valor_aposta=valor_aposta, tipo_meta=tipo_meta, usa_perda_acumulada=usa_perda_acumulada, numero_jogos_martingale=numero_jogos_martingale, aposta_no_favorito=aposta_no_favorito, perda_acumulada=perda_acumulada )
+    perda_acumulada = float(sys.argv[10]) if len(sys.argv) > 10 else int(input())
+
+    chrome = ChromeAuto(meta=meta, tipo_valor=tipo_valor, valor_aposta=valor_aposta, tipo_meta=tipo_meta, usa_perda_acumulada=usa_perda_acumulada, numero_jogos_martingale=numero_jogos_martingale, aposta_no_favorito=aposta_no_favorito, perda_acumulada=perda_acumulada, apostar_ate=apostar_ate )
     chrome.acessa('https://www.sportingbet.com/pt-br/labelhost/login')        
     chrome.faz_login()  
 
