@@ -45,7 +45,7 @@ class ChromeAuto():
         self.x_path_clicavel = None
         self.jogos_atuais = []
         self.controla_jogo_acima_abaixo = 0
-        self.n_jogos_alerta_sistema_rodando = 7
+        self.n_jogos_alerta_sistema_rodando = 5
         self.nome_time = None
         self.numero_jogos_martingale = numero_jogos_martingale
         self.aposta_no_favorito = aposta_no_favorito
@@ -446,8 +446,6 @@ class ChromeAuto():
                 numero_apostas_abertas = self.chrome.execute_script(f'let d = await fetch("https://sports.sportingbet.com/pt-br/sports/api/mybets/betslips?index=1&maxItems=12&typeFilter=2"); return await d.json();')
                 numero_apostas_abertas = numero_apostas_abertas['summary']['openBetsCount']
 
-                print('NÚMERO DE APOSTAS ABERTAS: ', numero_apostas_abertas)
-
                 if numero_apostas_abertas > 0:
                     self.jogos_realizados += 1
                     if self.jogos_realizados % self.n_jogos_alerta_sistema_rodando == 0:
@@ -528,8 +526,6 @@ class ChromeAuto():
         pause.until( hora_do_jogo + timedelta(minutes=1, seconds=20)  )
     
     def espera_resultado_jogo(self):
-        print('Entrou no espera_resultado_jogo')
-
         try:
             print('HORÁRIO', self.hora_jogo )
             print('Esperando resultado da partida...')
@@ -577,9 +573,6 @@ class ChromeAuto():
                 if contador_de_trava == 10:
                     self.telegram_bot_erro.envia_mensagem(f'SISTEMA POSSIVELMENTE TRAVADO AO ESPERAR RESULTADO DA PARTIDA!!!')
                 sleep(5)
-            
-            print('JÁ SAIU RESULTADO')
-            # agora vamos conferir se foi favorável ou não              
 
             contador_de_trava = 0
 
@@ -629,10 +622,12 @@ class ChromeAuto():
                     m_limite = int(self.apostar_ate.split(':')[1])
                     hora_limite = datetime( hora_atual.year, hora_atual.month, hora_atual.day, h_limite, m_limite, 0)
 
-                    if hora_atual >= hora_atual:
+                    if hora_atual >= hora_limite:
                         print('PARABÉNS! VOCÊ ATINGIU SUA META!')
                         self.telegram_bot_erro.envia_mensagem(f'PARABÉNS! VOCÊ ATINGIU SUA META! SEU SALDO É: R$ {self.saldo}\nMAIOR SEQUÊNCIA DE PERDAS: {self.maior_perdidas_em_sequencia}')
                         print(f'MAIOR SEQUÊNCIA DE PERDAS: {self.maior_perdidas_em_sequencia}')
+                        self.chrome.quit()
+                        exit(0)
 
             if self.usa_perda_acumulada:
                 if self.perdidas_em_sequencia == self.numero_jogos_martingale:
@@ -683,16 +678,20 @@ if __name__ == '__main__':
     print('(1) PORCENTAGEM DO SALDO (2) VALOR ABSOLUTO')
 
     tipo_valor = int(sys.argv[1]) if len(sys.argv) > 1 else int(input())
+    print(tipo_valor)
     
     print('INSIRA O VALOR DESEJADO DAS APOSTAS')
     valor_aposta = float(sys.argv[2]) if len(sys.argv) > 2 else float(input())
+    print(valor_aposta)
     
     print('COMO QUER ESTABELECER A META?')
     print('(1) PORCENTAGEM DO SALDO (2) VALOR ABSOLUTO (3) SALDO ATUAL MAIS META (4) SALDO ATUAL MAIS VALOR (5) NÚMERO DE VITÓRIAS')
 
     tipo_meta = int(sys.argv[3]) if len(sys.argv) > 3 else int(input())
+    print(tipo_meta)
     print('INSIRA O VALOR DA META')
     meta = float(sys.argv[4]) if len(sys.argv) > 4 else float(input())
+    print(meta)
 
     print('QUER USAR A PERDA ACUMULADA? (1) SIM (2) NÃO')
     usa_perda_acumulada = int(sys.argv[5]) if len(sys.argv) > 5 else int(input())
@@ -700,17 +699,20 @@ if __name__ == '__main__':
         usa_perda_acumulada = True
     else:
         usa_perda_acumulada = False
+    print(usa_perda_acumulada)
 
     numero_jogos_martingale = 0
     if usa_perda_acumulada:
         print('ATÉ QUANTAS PERDAS QUER USAR O MARTINGALE?')
         numero_jogos_martingale = int(sys.argv[6]) if len(sys.argv) > 6 else int(input())
+        print(numero_jogos_martingale)
 
     print('O QUE DESEJA FAZER AO ATINGIR A META?')
     print('(1) FECHAR O APLICATIVO')
     print('(2) DESLIGAR O COMPUTADOR')
     print('(3) RECALCULAR META E CONTINUAR APOSTANDO')
     ao_atingir_meta = int(sys.argv[7]) if len(sys.argv) > 7 else int(input())      
+    print(ao_atingir_meta)
 
     print('APOSTAR NO FAVORITO OU NO ADVERSÁRIO? (1) FAVORITO (2) ADVERSÁRIO')
     aposta_no_favorito = int(sys.argv[8]) if len(sys.argv) > 8 else int(input())
@@ -718,11 +720,16 @@ if __name__ == '__main__':
         aposta_no_favorito = True
     else:
         aposta_no_favorito = False
+    print(aposta_no_favorito)
 
     print('FECHAR PROGRAMA SE APOSTA VENCEDORA FOR APÓS O HORÁRIO: ')
     apostar_ate = (sys.argv[9]) if len(sys.argv) > 9 else input()
+    print(apostar_ate)
 
     perda_acumulada = float(sys.argv[10]) if len(sys.argv) > 10 else int(input())
+    print('PERDA ACUMULADA: ', perda_acumulada)
+
+    input('ENTER PARA CONTINUAR')
 
     chrome = ChromeAuto(meta=meta, tipo_valor=tipo_valor, valor_aposta=valor_aposta, tipo_meta=tipo_meta, usa_perda_acumulada=usa_perda_acumulada, numero_jogos_martingale=numero_jogos_martingale, aposta_no_favorito=aposta_no_favorito, perda_acumulada=perda_acumulada, apostar_ate=apostar_ate )
     chrome.acessa('https://www.sportingbet.com/pt-br/labelhost/login')        
