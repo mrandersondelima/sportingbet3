@@ -729,8 +729,6 @@ if __name__ == '__main__':
     perda_acumulada = float(sys.argv[10]) if len(sys.argv) > 10 else int(input())
     print('PERDA ACUMULADA: ', perda_acumulada)
 
-    input('ENTER PARA CONTINUAR')
-
     chrome = ChromeAuto(meta=meta, tipo_valor=tipo_valor, valor_aposta=valor_aposta, tipo_meta=tipo_meta, usa_perda_acumulada=usa_perda_acumulada, numero_jogos_martingale=numero_jogos_martingale, aposta_no_favorito=aposta_no_favorito, perda_acumulada=perda_acumulada, apostar_ate=apostar_ate )
     chrome.acessa('https://www.sportingbet.com/pt-br/labelhost/login')        
     chrome.faz_login()  
