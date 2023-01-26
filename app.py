@@ -285,9 +285,11 @@ class ChromeAuto():
             print(f'VALOR POR APOSTA: {self.valor_aposta:.2f}')        
             print(f'META: { self.meta:.2f}')            
 
-            virtuais = WebDriverWait(self.chrome, 20).until(
-                EC.element_to_be_clickable((By.XPATH, f"//*[normalize-space(text()) = 'Virtuais']/ancestor::a" ) )) 
-            virtuais.click() 
+            # virtuais = WebDriverWait(self.chrome, 20).until(
+            #     EC.element_to_be_clickable((By.XPATH, f"//*[normalize-space(text()) = 'Virtuais']/ancestor::a" ) )) 
+            # virtuais.click() 
+
+            self.chrome.get('https://sports.sportingbet.com/pt-br/sports/virtual/futebol-virtual-101/copa-do-mundo-100204')
 
             sleep(2)
 
@@ -449,7 +451,7 @@ class ChromeAuto():
                 if numero_apostas_abertas > 0:
                     self.jogos_realizados += 1
                     if self.jogos_realizados % self.n_jogos_alerta_sistema_rodando == 0:
-                        self.telegram_bot.envia_mensagem('SISTEMA AINDA RODANDO...')                    
+                        self.telegram_bot.envia_mensagem(f'{self.jogos_realizados} JOGOS DESDE ÚLTIMA VITÓRIA.')                    
                     return
 
                 if contador_travamento == 10:
@@ -590,6 +592,7 @@ class ChromeAuto():
                         self.telegram_bot_erro.envia_mensagem(f'SISTEMA POSSIVELMENTE TRAVADO AO ATUALIZAR SALDO!!!')
                 print('GANHOU.')
                 self.perdidas_em_sequencia = 0
+                self.jogos_realizados = 0
                 self.numero_vitorias += 1
             else:
                 self.perdidas_em_sequencia += 1
