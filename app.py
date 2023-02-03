@@ -369,21 +369,28 @@ class ChromeAuto():
             odd_fora = float(odd_fora)
             odd_jogo = 0
 
-            if odd_casa >= 4 and odd_casa >= odd_fora:
-                odd_jogo = odd_casa
-                aposta_casa = WebDriverWait(self.chrome, 20).until(
-                    EC.element_to_be_clickable((By.XPATH, '/html/body/vn-app/vn-dynamic-layout-single-slot[4]/vn-main/main/div/ms-main/ng-scrollbar[1]/div/div/div/div/ms-main-column/div/ms-virtual-list/ms-virtual-fixture/div/ms-option-group-list/div[1]/ms-option-panel[1]/ms-regular-group/ms-regular-option-group/div/ms-option[1]' ) )) 
-                aposta_casa.click()
-            elif odd_fora >= 4 and odd_fora >= odd_casa:
-                aposta_fora = WebDriverWait(self.chrome, 20).until(
-                    EC.element_to_be_clickable((By.XPATH, '/html/body/vn-app/vn-dynamic-layout-single-slot[4]/vn-main/main/div/ms-main/ng-scrollbar[1]/div/div/div/div/ms-main-column/div/ms-virtual-list/ms-virtual-fixture/div/ms-option-group-list/div[1]/ms-option-panel[1]/ms-regular-group/ms-regular-option-group/div/ms-option[3]' ) )) 
-                aposta_fora.click()
-                odd_jogo = odd_fora
-            elif odd_casa == odd_fora and odd_casa >= 4:
-                odd_jogo = odd_casa
-                aposta_casa = WebDriverWait(self.chrome, 20).until(
-                    EC.element_to_be_clickable((By.XPATH, '/html/body/vn-app/vn-dynamic-layout-single-slot[4]/vn-main/main/div/ms-main/ng-scrollbar[1]/div/div/div/div/ms-main-column/div/ms-virtual-list/ms-virtual-fixture/div/ms-option-group-list/div[1]/ms-option-panel[1]/ms-regular-group/ms-regular-option-group/div/ms-option[1]' ) )) 
-                aposta_casa.click()
+            if self.aposta_no_favorito != 3:
+                if odd_casa >= 4 and odd_casa >= odd_fora:
+                    odd_jogo = odd_casa
+                    aposta_casa = WebDriverWait(self.chrome, 20).until(
+                        EC.element_to_be_clickable((By.XPATH, '/html/body/vn-app/vn-dynamic-layout-single-slot[4]/vn-main/main/div/ms-main/ng-scrollbar[1]/div/div/div/div/ms-main-column/div/ms-virtual-list/ms-virtual-fixture/div/ms-option-group-list/div[1]/ms-option-panel[1]/ms-regular-group/ms-regular-option-group/div/ms-option[1]' ) )) 
+                    aposta_casa.click()
+                elif odd_fora >= 4 and odd_fora >= odd_casa:
+                    aposta_fora = WebDriverWait(self.chrome, 20).until(
+                        EC.element_to_be_clickable((By.XPATH, '/html/body/vn-app/vn-dynamic-layout-single-slot[4]/vn-main/main/div/ms-main/ng-scrollbar[1]/div/div/div/div/ms-main-column/div/ms-virtual-list/ms-virtual-fixture/div/ms-option-group-list/div[1]/ms-option-panel[1]/ms-regular-group/ms-regular-option-group/div/ms-option[3]' ) )) 
+                    aposta_fora.click()
+                    odd_jogo = odd_fora
+                elif odd_casa == odd_fora and odd_casa >= 4:
+                    odd_jogo = odd_casa
+                    aposta_casa = WebDriverWait(self.chrome, 20).until(
+                        EC.element_to_be_clickable((By.XPATH, '/html/body/vn-app/vn-dynamic-layout-single-slot[4]/vn-main/main/div/ms-main/ng-scrollbar[1]/div/div/div/div/ms-main-column/div/ms-virtual-list/ms-virtual-fixture/div/ms-option-group-list/div[1]/ms-option-panel[1]/ms-regular-group/ms-regular-option-group/div/ms-option[1]' ) )) 
+                    aposta_casa.click()
+            else:
+                if odd_casa >= 4 and odd_casa >= odd_fora or odd_fora >= 4 and odd_fora >= odd_casa or odd_casa == odd_fora and odd_casa >= 4:
+                    odd_jogo = odd_empate
+                    aposta_empate = WebDriverWait(self.chrome, 20).until(
+                        EC.element_to_be_clickable((By.XPATH, '/html/body/vn-app/vn-dynamic-layout-single-slot[4]/vn-main/main/div/ms-main/ng-scrollbar[1]/div/div/div/div/ms-main-column/div/ms-virtual-list/ms-virtual-fixture/div/ms-option-group-list/div[1]/ms-option-panel[1]/ms-regular-group/ms-regular-option-group/div/ms-option[2]' ) ))                      
+                    aposta_empate.click()
 
             if odd_jogo != 0:
                 if self.tipo_valor == TipoValorAposta.PORCENTAGEM:
@@ -445,7 +452,7 @@ class ChromeAuto():
                 print(f'SALDO ATUAL: {self.saldo}')
                 print(f'META: {self.meta:.2f}')
 
-                numero_apostas_abertas = self.chrome.execute_script(f'let d = await fetch("https://sports.sportingbet.com/pt-br/sports/api/mybets/betslips?index=1&maxItems=12&typeFilter=2"); return await d.json();')
+                numero_apostas_abertas = self.chrome.execute_script(f'let d = await fetch("https://sports.sportingbet.com/pt-br/sports/api/mybets/betslips?index=1&maxItems=1&typeFilter=1"); return await d.json();')
                 numero_apostas_abertas = numero_apostas_abertas['summary']['openBetsCount']
 
                 if numero_apostas_abertas > 0:
@@ -454,7 +461,8 @@ class ChromeAuto():
                         self.telegram_bot.envia_mensagem(f'{self.jogos_realizados} JOGOS DESDE ÚLTIMA VITÓRIA.')                    
                     return
 
-                if contador_travamento == 10:
+                contador_travamento += 1
+                if contador_travamento % 10 == 0:
                     self.telegram_bot_erro.envia_mensagem(f'SISTEMA POSSIVELMENTE TRAVADO NO INSERE VALOR!!!')
 
             except Exception as e:
@@ -470,16 +478,16 @@ class ChromeAuto():
         leu_saldo = False
         contador_de_trava = 0
         while not leu_saldo:
-            sleep(10)
+            sleep(5)
             try:
                 saldo_request = self.chrome.execute_script(f'let d = await fetch("https://sports.sportingbet.com/pt-br/api/balance/refresh"); return await d.json();')
                 self.saldo = saldo_request['vnBalance']['accountBalance']
                 leu_saldo = True
-                sleep(10)
+                sleep(5)
             except Exception as e:
                 print(e)
                 contador_de_trava += 1
-                if contador_de_trava >= 10:
+                if contador_de_trava % 10 == 0:
                     self.telegram_bot_erro.envia_mensagem('SISTEMA POSSIVELMENTE TRAVADO AO LER SALDO.')
                     self.chrome.refresh()
                 print('Não foi possível ler saldo. Tentando de novo...')
@@ -541,14 +549,14 @@ class ChromeAuto():
 
             pause.until( hora_do_jogo + timedelta(minutes=1, seconds=20)  )
 
-            numero_apostas_abertas = self.chrome.execute_script(f'let d = await fetch("https://sports.sportingbet.com/pt-br/sports/api/mybets/betslips?index=1&maxItems=1&typeFilter=2"); return await d.json();')
+            numero_apostas_abertas = self.chrome.execute_script(f'let d = await fetch("https://sports.sportingbet.com/pt-br/sports/api/mybets/betslips?index=1&maxItems=1&typeFilter=1"); return await d.json();')
             numero_apostas_abertas = numero_apostas_abertas['summary']['openBetsCount']
 
             contador_de_trava = 0
 
             # enquanto a aposta não for liquidada o script vai ficar buscando aqui
             while numero_apostas_abertas == 1:
-                numero_apostas_abertas = self.chrome.execute_script(f'let d = await fetch("https://sports.sportingbet.com/pt-br/sports/api/mybets/betslips?index=1&maxItems=1&typeFilter=2"); return await d.json();')
+                numero_apostas_abertas = self.chrome.execute_script(f'let d = await fetch("https://sports.sportingbet.com/pt-br/sports/api/mybets/betslips?index=1&maxItems=1&typeFilter=1"); return await d.json();')
                 numero_apostas_abertas = numero_apostas_abertas['summary']['openBetsCount']
                 contador_de_trava += 1
                 if contador_de_trava == 10:
@@ -717,12 +725,8 @@ if __name__ == '__main__':
     ao_atingir_meta = int(sys.argv[7]) if len(sys.argv) > 7 else int(input())      
     print(ao_atingir_meta)
 
-    print('APOSTAR NO FAVORITO OU NO ADVERSÁRIO? (1) FAVORITO (2) ADVERSÁRIO')
+    print('APOSTAR NO FAVORITO OU NO ADVERSÁRIO? (1) FAVORITO (2) ADVERSÁRIO (3) EMPATE')
     aposta_no_favorito = int(sys.argv[8]) if len(sys.argv) > 8 else int(input())
-    if aposta_no_favorito == 1:
-        aposta_no_favorito = True
-    else:
-        aposta_no_favorito = False
     print(aposta_no_favorito)
 
     print('FECHAR PROGRAMA SE APOSTA VENCEDORA FOR APÓS O HORÁRIO: ')
@@ -738,8 +742,11 @@ if __name__ == '__main__':
 
     horario_jogo = '/html/body/vn-app/vn-dynamic-layout-single-slot[4]/vn-main/main/div/ms-main/ng-scrollbar[1]/div/div/div/div/ms-main-column/div/ms-virtual-list/ms-virtual-fixture/div/ms-tab-bar/ms-scroll-adapter/div/div/ul/li[2]/a'
 
-    primeiro_horario = chrome.chrome.find_element(By.XPATH, horario_jogo + '/descendant::*')
+    primeiro_horario = WebDriverWait(chrome.chrome, 20).until(
+                EC.presence_of_element_located((By.XPATH, horario_jogo + '/descendant::span') )) 
     hora_jogo_atual = primeiro_horario.get_property('innerText')
+
+
     chrome.hora_jogo = hora_jogo_atual
 
     while True:
